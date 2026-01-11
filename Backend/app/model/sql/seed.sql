@@ -52,8 +52,9 @@ FROM classroom c
 JOIN role r ON r.name = 'Teacher';
 
 -- 5) Students (2 per classroom)
-INSERT IGNORE INTO student (first_name, last_name, class_id, is_active)
+INSERT IGNORE INTO student (student_number, first_name, last_name, class_id, is_active)
 SELECT
+  CONCAT('S-', c.class_name, '-', n.n),
   CONCAT('Student', n.n),
   CONCAT('Class', c.class_name),
   c.class_id,

@@ -12,96 +12,109 @@ class StudentController {
         $students = $this->students->getStudents();
         
         echo json_encode([
-            "message" => "Users retrieved successfully",
+            "message" => "Students retrieved successfully",
             "data" => $students
         ]);
         exit;
     }
-    // public function getStaffByUid($id) {
-    //     $staff = $this->users->getStaffByUid($id);
 
-    //     if (!$staff) {
-    //         http_response_code(404);
-    //         echo json_encode(["error" => "User with id $id not found"]);
-    //         exit;
-    //     }
-        
-    //     echo json_encode([
-    //         "message" => "User with id $id retrieved successfully",
-    //         "data" => $staff
-    //     ]);
-    //     exit;
-    // }    
-    // public function getStaffBySid($id) {
-    //     $staff = $this->users->getStaffBySid($id);
+    public function getStudentById($id) {
+        $student = $this->students->getStudentById($id);
 
-    //     if (!$staff) {
-    //         http_response_code(404);
-    //         echo json_encode(["error" => "User with staff-id $id not found"]);
-    //         exit;
-    //     }
-        
-    //     echo json_encode([
-    //         "message" => "User with Staff-id $id retrieved successfully",
-    //         "data" => $staff
-    //     ]);
-    //     exit;
-    // }
-    // public function addStaff() {
-    //     $payload = json_decode(file_get_contents('php://input'), true) ?? [];
+        if (!$student) {
+            http_response_code(404);
+            echo json_encode(["error" => "Student with id $id not found"]);
+            exit;
+        }
 
-    //     if (empty($payload["staff_id"]) || empty($payload["role_id"]) || empty($payload["password"])) {
-    //         http_response_code(400);
-    //         echo json_encode(["error" => "staff_id, role_id, and password are required"]);
-    //         exit;
-    //     }
+        echo json_encode([
+            "message" => "Student with id $id retrieved successfully",
+            "data" => $student
+        ]);
+        exit;
+    }
 
-    //     $userId = $this->users->addStaff($payload);
-    //     if (!$userId) {
-    //         http_response_code(500);
-    //         echo json_encode(["error" => "Failed to create user"]);
-    //         exit;
-    //     }
+    public function getStudentByNumber($studentNumber) {
+        $student = $this->students->getStudentByNumber($studentNumber);
 
-    //     echo json_encode([
-    //         "message" => "User created successfully",
-    //         "user_id" => $userId
-    //     ]);
-    //     exit;
-    // }
+        if (!$student) {
+            http_response_code(404);
+            echo json_encode(["error" => "Student with number $studentNumber not found"]);
+            exit;
+        }
 
-    // public function deleteStaff($id) {
-    //     $deleted = $this->users->deleteStaff($id);
-    //     if (!$deleted) {
-    //         http_response_code(404);
-    //         echo json_encode(["error" => "User with id $id not found"]);
-    //         exit;
-    //     }
+        echo json_encode([
+            "message" => "Student with number $studentNumber retrieved successfully",
+            "data" => $student
+        ]);
+        exit;
+    }
 
-    //     echo json_encode([
-    //         "message" => "User with id $id deleted successfully"
-    //     ]);
-    //     exit;
-    // }
+    public function getStudentsByClassId($classId) {
+        $students = $this->students->getStudentsByClassId($classId);
 
-    // public function updateStaff($id) {
-    //     $payload = json_decode(file_get_contents('php://input'), true) ?? [];
-    //     if (!$payload) {
-    //         http_response_code(400);
-    //         echo json_encode(["error" => "No update data provided"]);
-    //         exit;
-    //     }
+        echo json_encode([
+            "message" => "Students in class $classId retrieved successfully",
+            "data" => $students
+        ]);
+        exit;
+    }
 
-    //     $updated = $this->users->updateStaff($id, $payload);
-    //     if (!$updated) {
-    //         http_response_code(404);
-    //         echo json_encode(["error" => "User with id $id not found or no changes applied"]);
-    //         exit;
-    //     }
+    public function addStudent() {
+        $payload = json_decode(file_get_contents('php://input'), true) ?? [];
 
-    //     echo json_encode([
-    //         "message" => "User with id $id updated successfully"
-    //     ]);
-    //     exit;
-    // }
+        if (empty($payload["student_number"]) || empty($payload["first_name"]) || empty($payload["last_name"]) || empty($payload["class_id"])) {
+            http_response_code(400);
+            echo json_encode(["error" => "student_number, first_name, last_name, and class_id are required"]);
+            exit;
+        }
+
+        $studentId = $this->students->addStudent($payload);
+        if (!$studentId) {
+            http_response_code(500);
+            echo json_encode(["error" => "Failed to create student"]);
+            exit;
+        }
+
+        echo json_encode([
+            "message" => "Student created successfully",
+            "student_id" => $studentId
+        ]);
+        exit;
+    }
+
+    public function deleteStudent($id) {
+        $deleted = $this->students->deleteStudent($id);
+        if (!$deleted) {
+            http_response_code(404);
+            echo json_encode(["error" => "Student with id $id not found"]);
+            exit;
+        }
+
+        echo json_encode([
+            "message" => "Student with id $id deleted successfully"
+        ]);
+        exit;
+    }
+
+    public function updateStudent($id) {
+        $payload = json_decode(file_get_contents('php://input'), true) ?? [];
+        if (!$payload) {
+            http_response_code(400);
+            echo json_encode(["error" => "No update data provided"]);
+            exit;
+        }
+
+        $updated = $this->students->updateStudent($id, $payload);
+        if (!$updated) {
+            http_response_code(404);
+            echo json_encode(["error" => "Student with id $id not found or no changes applied"]);
+            exit;
+        }
+
+        echo json_encode([
+            "message" => "Student with id $id updated successfully"
+        ]);
+        exit;
+    }
 }
