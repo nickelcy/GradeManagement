@@ -142,7 +142,7 @@ class Report {
             return null;
         }
 
-        $sql = "SELECT AVG(s.score_value) AS average
+        $sql = "SELECT sub.subject_name, AVG(s.score_value) AS average
                 FROM score s
                 JOIN subject sub ON sub.subject_id = s.subject_id
                 JOIN term t ON t.term_id = s.term_id
@@ -150,7 +150,8 @@ class Report {
                 JOIN student st ON st.student_id = s.student_id
                 JOIN classroom c ON c.class_id = st.class_id
                 JOIN grade g ON g.grade_id = c.grade_id
-                WHERE ay.year_label = ? AND t.term_number = ? AND g.grade_number = ? AND s.subject_id = ?";
+                WHERE ay.year_label = ? AND t.term_number = ? AND g.grade_number = ? AND s.subject_id = ?
+                GROUP BY sub.subject_id, sub.subject_name";
 
         $stmt = $this->db->prepare($sql);
         if ($stmt === false) {
@@ -168,8 +169,13 @@ class Report {
 
         $res = $stmt->get_result();
         $row = $res->fetch_assoc();
-        if (!$row) return null;
-        return is_null($row['average']) ? null : round((float)$row['average'], 2);
+        if (!$row) {
+            return null;
+        }
+
+        return [
+            'subject_name' => $row['subject_name'],
+            'average' => is_null($row['average']) ? null : round((float)$row['average'], 2),
+        ];
     }
 }
-

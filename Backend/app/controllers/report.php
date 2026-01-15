@@ -47,20 +47,30 @@ class ReportController {
             exit;
         }
 
-        $avg = $this->report->getSubjectReportAverage($year, $term, $grade, $subject);
-        if ($avg === null) {
+        $params = [
+            'year' => $year,
+            'term' => $term,
+            'grade' => $grade,
+            'subject' => $subject,
+        ];
+
+        $data = $this->report->getSubjectReportAverage($year, $term, $grade, $subject);
+        if ($data === null) {
             echo json_encode([
                 'message' => 'Subject report generated',
-                'data' => ['average' => null]
+                'data' => [
+                    'subject_name' => null,
+                    'average' => null,
+                    'params' => $params,
+                ]
             ]);
             exit;
         }
 
         echo json_encode([
             'message' => 'Subject report generated',
-            'data' => ['average' => $avg]
+            'data' => array_merge($data, ['params' => $params])
         ]);
         exit;
     }
 }
-
