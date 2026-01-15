@@ -41,6 +41,7 @@ erDiagram
 
   STUDENT {
     int student_id PK
+    string student_number UK
     string first_name
     string last_name
     int class_id FK
