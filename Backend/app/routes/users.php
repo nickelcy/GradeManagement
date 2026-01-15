@@ -38,3 +38,9 @@ if ($method === 'PUT' && preg_match('#^/api/users/(\d+)/?$#', $url, $m)) {
     $usersController->updateStaff($m[1]);
     exit;
 }
+
+if ($method === 'PUT' && $url === '/api/profile') {
+    $auth = requireUser();
+    $usersController->updateProfile($auth["user_id"]);
+    exit;
+}

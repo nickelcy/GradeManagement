@@ -27,6 +27,7 @@ require_once __DIR__ . '/../app/routes/login.php';
 require_once __DIR__ . '/../app/routes/students.php';
 require_once __DIR__ . '/../app/routes/score.php';
 require_once __DIR__ . '/../app/routes/report.php';
+require_once __DIR__ . '/../app/routes/year.php';
 
 http_response_code(404);
 echo json_encode([

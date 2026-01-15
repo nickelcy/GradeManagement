@@ -104,4 +104,27 @@ class UsersController {
         ]);
         exit;
     }
+
+    public function updateProfile($id) {
+        $payload = json_decode(file_get_contents('php://input'), true) ?? [];
+        if (!$payload) {
+            http_response_code(400);
+            echo json_encode(["error" => "No update data provided"]);
+            exit;
+        }
+
+        unset($payload["role_id"], $payload["is_active"], $payload["staff_id"], $payload["assigned_class_id"]);
+
+        $updated = $this->users->updateStaff($id, $payload);
+        if (!$updated) {
+            http_response_code(404);
+            echo json_encode(["error" => "Profile with id $id not found or no changes applied"]);
+            exit;
+        }
+
+        echo json_encode([
+            "message" => "Profile with id $id updated successfully"
+        ]);
+        exit;
+    }
 }
