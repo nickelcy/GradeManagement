@@ -10,13 +10,13 @@ if ($method === 'GET' && ($url === '/api/users' || $url === '/api/staff')){
 }   
 
 if ($method === 'GET' && preg_match('#^/api/users/(\d+)/?$#', $url, $m)) {
-    requireAdmin();
+    requireUser();
     $usersController->getStaffByUid($m[1]);
     exit;
 }
 
 if ($method === 'GET' && preg_match('#^/api/staff/([^/]+)/?$#', $url, $m)) {
-    requireAdmin();
+    requireUser();
     $usersController->getStaffBySid($m[1]);
     exit;
 }

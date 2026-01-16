@@ -20,9 +20,6 @@ export const AdminSidebar = ({ userId, onLogout }: SidebarProps) => {
         <div className="sidebar-top">
           <div className="sidebar-role">Administrator</div>
           <nav className="nav-links">
-            <button type="button" className="nav-link active">
-              Academic Year
-            </button>
             <Year />
             <button type="button" className="nav-link">
               Staff Users
@@ -80,9 +77,7 @@ export const TeacherSidebar = ({ userId, onLogout }: SidebarProps) => {
           <div className="sidebar-role">Teacher</div>
           <div className="sidebar-class">Grade 1 - Class 1A</div>
           <nav className="nav-links">
-            <button type="button" className="nav-link active">
-              Academic Year
-            </button>
+            <Year />
             <button type="button" className="nav-link">
               Scores
             </button>

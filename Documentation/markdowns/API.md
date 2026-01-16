@@ -71,11 +71,11 @@ GET `/api/users` or `/api/staff`
 
 GET `/api/users/{id}`
 - Purpose: get user by `user_id`.
-- Auth: admin.
+- Auth: logged-in user.
 
 GET `/api/staff/{staff_id}`
 - Purpose: get user by staff id.
-- Auth: admin.
+- Auth: logged-in user.
 
 POST `/api/users` or `/api/staff`
 - Purpose: create user.
@@ -194,6 +194,10 @@ PUT `/api/classrooms/{id}`
 GET `/api/years/{id}`
 - Purpose: get academic year by id.
 - Auth: admin.
+
+GET `/api/years`
+- Purpose: get all the academic years.
+- Auth: logged-in user.
 
 POST `/api/years`
 - Purpose: create academic year.

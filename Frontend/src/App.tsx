@@ -1,6 +1,7 @@
 import './App.css'
 import { AuthProvider, useAuth } from './context/AuthContext'
 import { UserProvider } from './context/UserContext'
+import { YearProvider } from './context/YearContext'
 import './pages/page.css'
 import AdminDashboard from './pages/admin/AdminDashboard'
 import Login from './pages/auth/Login'
@@ -18,7 +19,9 @@ function App() {
   return (
     <AuthProvider>
       <UserProvider>
-        <AppContent />
+        <YearProvider>
+          <AppContent />
+        </YearProvider>
       </UserProvider>
     </AuthProvider>
   )

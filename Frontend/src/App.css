@@ -14,6 +14,16 @@
   --color-neutral-800: #2a2a2a;
 
   --shadow-elevation-1: 0 16px 40px rgba(0, 0, 0, 0.35);
+
+  --color-bg: var(--color-bg-primary);
+  --color-surface: var(--color-bg-surface);
+  --color-text: var(--color-text-primary);
+  --color-accent: var(--color-bg-surface);
+  --color-accent-strong: var(--color-neutral-800);
+  --color-border: rgba(255, 255, 255, 0.12);
+  --color-border-strong: rgba(255, 255, 255, 0.3);
+  --color-overlay: rgba(0, 0, 0, 0.6);
+  --shadow-elev: var(--shadow-elevation-1);
 }
 
 
