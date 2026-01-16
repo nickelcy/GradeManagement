@@ -50,6 +50,20 @@ class Year {
         return $this->db->insert_id;
     }
 
+    public function getYears() {
+        $stmt = $this->db->prepare(
+            "SELECT * FROM academic_year ORDER BY start_date DESC"
+        );
+        if ($stmt === false) {
+            return null;
+        }
+        if (!$stmt->execute()) {
+            return null;
+        }
+        $result = $stmt->get_result();
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
     public function updateYear($id, array $parameters) {
         $fields = [];
         $types = "";

@@ -24,6 +24,21 @@ class YearController {
         exit;
     }
 
+    public function getYears() {
+        $years = $this->year->getYears();
+        if ($years === null) {
+            http_response_code(500);
+            echo json_encode(["error" => "Failed to retrieve academic years"]);
+            exit;
+        }
+
+        echo json_encode([
+            "message" => "Academic years retrieved successfully",
+            "data" => $years
+        ]);
+        exit;
+    }
+
     public function addYear() {
         $payload = json_decode(file_get_contents('php://input'), true) ?? [];
 

@@ -10,6 +10,12 @@ if ($method === 'GET' && preg_match('#^/api/years/(\d+)/?$#', $url, $m)) {
     exit;
 }
 
+if ($method === 'GET' && $url === '/api/years') {
+    requireUser();
+    $yearController->getYears();
+    exit;
+}
+
 if ($method === 'POST' && $url === '/api/years') {
     requireAdmin();
     $yearController->addYear();

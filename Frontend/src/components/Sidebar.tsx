@@ -3,7 +3,7 @@ import { FiLogOut, FiUser } from 'react-icons/fi'
 import { Profile } from './sidebar/Profile'
 import { useUser } from '../context/UserContext'
 import './Sidebar.css'
-
+import { Year } from './sidebar/Year'
 
 type SidebarProps = {
   userId: number | null
@@ -23,6 +23,7 @@ export const AdminSidebar = ({ userId, onLogout }: SidebarProps) => {
             <button type="button" className="nav-link active">
               Academic Year
             </button>
+            <Year />
             <button type="button" className="nav-link">
               Staff Users
             </button>
