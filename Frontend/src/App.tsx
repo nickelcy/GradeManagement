@@ -1,11 +1,25 @@
 import './App.css'
+import { AuthProvider, useAuth } from './context/AuthContext'
+import { UserProvider } from './context/UserContext'
+import AdminDashboard from './pages/admin/AdminDashboard'
+import Login from './pages/auth/Login'
+import TeacherDashboard from './pages/teacher/TeacherDashboard'
+
+const AppContent = () => {
+  const { token, roleId } = useAuth()
+  if (!token) {
+    return <Login />
+  }
+  return roleId === 1 ? <AdminDashboard /> : <TeacherDashboard />
+}
 
 function App() {
-
   return (
-    <>
-      <h1>Vite + React</h1>
-    </>
+    <AuthProvider>
+      <UserProvider>
+        <AppContent />
+      </UserProvider>
+    </AuthProvider>
   )
 }
 
