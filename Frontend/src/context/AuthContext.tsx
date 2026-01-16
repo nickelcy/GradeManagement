@@ -7,7 +7,7 @@ import {
   useState,
   type ReactNode,
 } from 'react'
-import api, { setAuthToken } from '../lib/api'
+import api, { setAuthToken } from '../utils/api'
 
 type AuthContextValue = {
   token: string | null

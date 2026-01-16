@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
-import api from '../../lib/api'
+import api from '../../utils/api'
 import { useAuth } from '../../context/AuthContext'
 import { useUser } from '../../context/UserContext'
+import './Profile.css'
 
 type ProfileProps = {
     isOpen: boolean

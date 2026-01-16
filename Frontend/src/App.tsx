@@ -1,6 +1,7 @@
 import './App.css'
 import { AuthProvider, useAuth } from './context/AuthContext'
 import { UserProvider } from './context/UserContext'
+import './pages/page.css'
 import AdminDashboard from './pages/admin/AdminDashboard'
 import Login from './pages/auth/Login'
 import TeacherDashboard from './pages/teacher/TeacherDashboard'

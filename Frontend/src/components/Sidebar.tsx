@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { FiLogOut, FiUser } from 'react-icons/fi'
 import { Profile } from './sidebar/Profile'
 import { useUser } from '../context/UserContext'
+import './Sidebar.css'
 
 
 type SidebarProps = {

@@ -1,0 +1,107 @@
+.dashboard-sidebar {
+  background: var(--color-surface);
+  padding: 2rem 1.5rem;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.sidebar-top {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.sidebar-role {
+  font-weight: 700;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-text);
+}
+
+.sidebar-class {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.nav-links {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.nav-link {
+  background: transparent;
+  border: none;
+  text-align: left;
+  font-size: 0.95rem;
+  padding: 0.35rem 0;
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.nav-link.active {
+  font-weight: 600;
+}
+
+.nav-group {
+  margin-top: 0.5rem;
+}
+
+.nav-title {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  margin-bottom: 0.4rem;
+}
+
+.nav-sub {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.sidebar-footer {
+  display: grid;
+  gap: 0.75rem;
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+}
+
+.sidebar-user {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sidebar-user svg {
+  color: var(--color-accent);
+}
+
+.sidebar-footer-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: #181818;
+  color: var(--color-text);
+  border-radius: 999px;
+  padding: 0.5rem 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.sidebar-footer-button:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+@media (max-width: 900px) {
+  .dashboard-sidebar {
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+}

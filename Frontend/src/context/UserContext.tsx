@@ -7,7 +7,7 @@ import {
   useState,
   type ReactNode,
 } from 'react'
-import api from '../lib/api'
+import api from '../utils/api'
 import { useAuth } from './AuthContext'
 
 type UserProfile = {
