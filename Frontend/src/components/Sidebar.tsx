@@ -4,6 +4,7 @@ import { Profile } from './sidebar/Profile'
 import { useUser } from '../context/UserContext'
 import './Sidebar.css'
 import { Year } from './sidebar/Year'
+import { useNavigate } from 'react-router-dom'
 
 type SidebarProps = {
   userId: number | null
@@ -15,6 +16,7 @@ export const AdminSidebar = ({ userId, onLogout }: SidebarProps) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
   const { profile } = useUser()
   const sidebarId = useId()
+  const navigate = useNavigate()
 
   return (
     <>
@@ -46,13 +48,13 @@ export const AdminSidebar = ({ userId, onLogout }: SidebarProps) => {
             <div className="nav-group">
             <span className="nav-title">Manage</span>
               <div className="nav-sub">
-                <button type="button" className="nav-link">
+                <button type="button" className="nav-link" onClick={() => navigate('/staff')}>
                   Staff Users
                 </button>
-                <button type="button" className="nav-link">
+                <button type="button" className="nav-link" onClick={() => navigate('/students')}>
                   Students
                 </button>
-                <button type="button" className="nav-link">
+                <button type="button" className="nav-link" onClick={() => navigate('/reports')}>
                   Reports
                 </button>
               </div>

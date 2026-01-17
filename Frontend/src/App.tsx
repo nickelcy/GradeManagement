@@ -3,7 +3,9 @@ import { AuthProvider, useAuth } from './context/AuthContext'
 import { UserProvider } from './context/UserContext'
 import { YearProvider } from './context/YearContext'
 import './pages/page.css'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import AdminDashboard from './pages/admin/AdminDashboard'
+import Users from './pages/admin/Users'
 import Login from './pages/auth/Login'
 import TeacherDashboard from './pages/teacher/TeacherDashboard'
 
@@ -12,7 +14,21 @@ const AppContent = () => {
   if (!token) {
     return <Login />
   }
-  return roleId === 1 ? <AdminDashboard /> : <TeacherDashboard />
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path="/"
+          element={roleId === 1 ? <AdminDashboard /> : <TeacherDashboard />}
+        />
+        <Route
+          path="/staff"
+          element={roleId === 1 ? <Users /> : <Navigate to="/" replace />}
+        />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </BrowserRouter>
+  )
 }
 
 function App() {
