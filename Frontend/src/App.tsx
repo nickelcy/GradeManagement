@@ -6,6 +6,8 @@ import './pages/page.css'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import AdminDashboard from './pages/admin/AdminDashboard'
 import Users from './pages/admin/Users'
+import Students from './pages/admin/Students'
+// import Reports from './pages/admin/Reports'
 import Login from './pages/auth/Login'
 import TeacherDashboard from './pages/teacher/TeacherDashboard'
 
@@ -25,6 +27,14 @@ const AppContent = () => {
           path="/staff"
           element={roleId === 1 ? <Users /> : <Navigate to="/" replace />}
         />
+        <Route
+          path="/students"
+          element={roleId === 1 ? <Students /> : <Navigate to="/" replace />}
+        />
+        {/* <Route
+          path="/reports"
+          element={roleId === 1 ? <Reports /> : <Navigate to="/" replace />}
+        />         */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
