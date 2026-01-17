@@ -21,7 +21,6 @@ export const Year = () => {
 
   return (
     <div className="sidebar-year">
-      <label className="sidebar-year-label">Academic Year</label>
       <div className={`dropdown ${open ? 'open' : ''}`}>
         <button
           type="button"

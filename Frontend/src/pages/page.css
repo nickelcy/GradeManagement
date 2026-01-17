@@ -52,7 +52,7 @@
   padding: 0.8rem 1.2rem;
   border-radius: 12px;
   border: 2px solid var(--color-primary);
-  background: var(--color-text-inverse);
+  background: transparent;
   color: var(--color-primary);
   font-size: 1rem;
   font-weight: 600;
@@ -63,7 +63,8 @@
 
 .login-button:hover {
   transform: translateY(-1px);
-  background: var(--color-bg-surface);
+  background: var(--color-primary);
+  color: var(--color-text);
 }
 
 .login-button:disabled {
@@ -81,8 +82,7 @@
 
 .dashboard-layout {
   min-height: 100vh;
-  display: grid;
-  grid-template-columns: 240px 1fr;
+  position: relative;
   background: #181818;
 }
 
@@ -133,10 +133,4 @@
   padding: 1.4rem;
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3);
-}
-
-@media (max-width: 900px) {
-  .dashboard-layout {
-    grid-template-columns: 1fr;
-  }
 }
