@@ -10,10 +10,12 @@ class Classroom {
 
     public function getClassroomById($id) {
         $stmt = $this->db->prepare(
-            "SELECT c.*, g.grade_number
+            "SELECT c.*, g.grade_number, COUNT(st.student_id) AS student_count
              FROM classroom c
              JOIN grade g ON g.grade_id = c.grade_id
-             WHERE c.class_id = ?"
+             LEFT JOIN student st ON st.class_id = c.class_id
+             WHERE c.class_id = ?
+             GROUP BY c.class_id"
         );
         if ($stmt === false) {
             return null;
@@ -47,10 +49,12 @@ class Classroom {
         }
 
         $stmt = $this->db->prepare(
-            "SELECT c.*, g.grade_number
+            "SELECT c.*, g.grade_number, COUNT(st.student_id) AS student_count
              FROM classroom c
              JOIN grade g ON g.grade_id = c.grade_id
+             LEFT JOIN student st ON st.class_id = c.class_id
              WHERE g.grade_number = ?
+             GROUP BY c.class_id
              ORDER BY c.class_name"
         );
         if ($stmt === false) {

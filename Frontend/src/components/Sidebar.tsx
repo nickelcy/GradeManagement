@@ -66,7 +66,7 @@ export const AdminSidebar = ({ userId, onLogout }: SidebarProps) => {
               <span className="nav-title">Grades</span>
               <div className="nav-sub">
                 {['1', '2', '3', '4', '5', '6'].map((grade) => (
-                  <button key={grade} type="button" className="nav-link">
+                  <button key={grade} type="button" className="nav-link" onClick={() => navigate(`/grade/${grade}`)}>
                     Grades {grade}
                   </button>
                 ))}

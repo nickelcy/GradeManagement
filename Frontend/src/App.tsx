@@ -5,6 +5,7 @@ import { YearProvider } from './context/YearContext'
 import './pages/page.css'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import AdminDashboard from './pages/admin/AdminDashboard'
+import Grade from './pages/admin/Grade'
 import Users from './pages/admin/Users'
 import Students from './pages/admin/Students'
 import StudentReport from './pages/admin/StudentReports'
@@ -40,6 +41,10 @@ const AppContent = () => {
           path="/subjectreport"
           element={roleId === 1 ? <SubjectReport /> : <Navigate to="/" replace />}
         />   
+        <Route
+          path="/grade/:grade"
+          element={roleId === 1 ? <Grade /> : <Navigate to="/" replace />}
+        />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>

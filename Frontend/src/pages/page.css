@@ -436,3 +436,74 @@
 .subject-id-table tbody tr:last-child td {
   border-bottom: none;
 }
+
+.grade-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.grade-title {
+  margin: 0;
+  font-size: 1.6rem;
+}
+
+.grade-title-icon {
+  font-size: 1.3rem;
+  color: var(--color-text-muted);
+}
+
+.grade-table-card {
+  background: #262626;
+  padding: 1rem;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+}
+
+.grade-status {
+  margin: 0 0 1rem;
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+}
+
+.grade-status.error {
+  color: #ff9a9a;
+}
+
+.grade-action-cell {
+  text-align: center;
+}
+
+.grade-action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 0.6rem;
+}
+
+.grade-action-button {
+  border: none;
+  background: transparent;
+  color: inherit;
+  padding: 0.35rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.grade-action-button.delete {
+  color: #ff5959;
+}
+
+.grade-action-button.edit {
+  color: #3cc36b;
+}
+
+.grade-action-button.view {
+  color: #4aa3ff;
+}
+
+.grade-action-button:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.08);
+}
