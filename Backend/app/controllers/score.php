@@ -35,46 +35,64 @@ class ScoreController {
                 $termMap[$termId] = [
                     "term_id" => $termId,
                     "term_number" => (int) $row["term_number"],
+                    "overall" => 0,
                     "scores" => [],
                 ];
             }
 
-            $recordedAt = $row["recorded_at"];
             $termMap[$termId]["scores"][(string) $subjectId] = [
                 "score_id" => (int) $row["score_id"],
                 "value" => (float) $row["score_value"],
-                "recorded_at" => $recordedAt
-                    ? str_replace(" ", "T", $recordedAt) . "Z"
-                    : null,
-                "teacher_user_id" => (int) $row["teacher_user_id"],
             ];
+        }
+
+        $subjectIds = array_column($subjects, "subject_id");
+        foreach ($termMap as $termId => $termData) {
+            $total = 0.0;
+            $subjectCount = count($subjectIds);
+            foreach ($subjectIds as $subjectId) {
+                $key = (string) $subjectId;
+                if (!isset($termMap[$termId]["scores"][$key])) {
+                    $termMap[$termId]["scores"][$key] = [
+                        "score_id" => null,
+                        "value" => 0,
+                    ];
+                }
+                $total += (float) $termMap[$termId]["scores"][$key]["value"];
+            }
+            $termMap[$termId]["overall"] = $subjectCount > 0 ? $total / $subjectCount : 0;
         }
 
         $terms = array_values($termMap);
         usort($terms, fn($a, $b) => $a["term_number"] <=> $b["term_number"]);
+        $overall = 0;
+        if ($terms) {
+            $overall = array_sum(array_column($terms, "overall")) / count($terms);
+        }
 
         echo json_encode([
             "message" => "Scores retrieved successfully",
             "student_id" => (int) $studentId,
             "year" => (int) $yearLabel,
+            "overall" => $overall,
             "subjects" => $subjects,
             "terms" => $terms,
         ]);
         exit;
     }
 
-    public function getClassScoresByTerm($classId, $termId) {
-        $scores = $this->score->getClassScoresByTerm($classId, $termId);
+    public function getClassScoresByTerm($classId, $yearLabel, $termNumber) {
+        $scores = $this->score->getClassScoresByTerm($classId, $yearLabel, $termNumber);
         if ($scores === null) {
             http_response_code(500);
             echo json_encode(["error" => "Failed to retrieve class scores"]);
             exit;
         }
 
-        echo json_encode([
-            "message" => "Class scores retrieved successfully",
-            "data" => $scores
-        ]);
+        echo json_encode(array_merge(
+            ["message" => "Class scores retrieved successfully"],
+            $scores
+        ));
         exit;
     }
 

@@ -43,9 +43,29 @@ class Score {
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function getClassScoresByTerm($classId, $termId) {
+    public function getClassScoresByTerm($classId, $yearLabel, $termNumber) {
         $classId = (int) $classId;
-        $termId = (int) $termId;
+        $yearLabel = (int) $yearLabel;
+        $termNumber = (int) $termNumber;
+
+        $stmt = $this->db->prepare(
+            "SELECT t.term_id, t.term_number, ay.year_label
+             FROM term t
+             JOIN academic_year ay ON ay.academic_year_id = t.academic_year_id
+             WHERE ay.year_label = ? AND t.term_number = ?"
+        );
+        if ($stmt === false) {
+            return null;
+        }
+        $stmt->bind_param("ii", $yearLabel, $termNumber);
+        if (!$stmt->execute()) {
+            return null;
+        }
+        $termRow = $stmt->get_result()->fetch_assoc();
+        if (!$termRow) {
+            return null;
+        }
+
         $stmt = $this->db->prepare(
             "SELECT grade_id FROM classroom WHERE class_id = ?"
         );
@@ -77,6 +97,7 @@ class Score {
             return null;
         }
         $subjects = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+        $subjectNames = array_map(fn($row) => $row["subject_name"], $subjects);
 
         $stmt = $this->db->prepare(
             "SELECT student_id, student_number, first_name, last_name
@@ -93,7 +114,15 @@ class Score {
         }
         $students = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
         if (!$students) {
-            return [];
+            return [
+                "term" => [
+                    "term_id" => (int) $termRow["term_id"],
+                    "term_number" => (int) $termRow["term_number"],
+                    "year" => (int) $termRow["year_label"],
+                ],
+                "subjects" => $subjectNames,
+                "students" => [],
+            ];
         }
 
         $stmt = $this->db->prepare(
@@ -105,6 +134,7 @@ class Score {
         if ($stmt === false) {
             return null;
         }
+        $termId = (int) $termRow["term_id"];
         $stmt->bind_param("ii", $classId, $termId);
         if (!$stmt->execute()) {
             return null;
@@ -129,10 +159,7 @@ class Score {
             foreach ($subjects as $subject) {
                 $subjectId = (int) $subject["subject_id"];
                 $scoreValue = $scoresByStudent[$studentId][$subjectId] ?? 0;
-                $scores[] = [
-                    "subject_name" => $subject["subject_name"],
-                    "score_value" => $scoreValue,
-                ];
+                $scores[$subject["subject_name"]] = $scoreValue;
                 $total += $scoreValue;
             }
 
@@ -141,15 +168,21 @@ class Score {
             $response[] = [
                 "student_id" => $studentId,
                 "student_number" => $student["student_number"],
-                "first_name" => $student["first_name"],
-                "last_name" => $student["last_name"],
-                "term_id" => $termId,
+                "name" => trim($student["first_name"] . " " . $student["last_name"]),
                 "scores" => $scores,
-                "overall_average" => $average,
+                "overall" => $average,
             ];
         }
 
-        return $response;
+        return [
+            "term" => [
+                "term_id" => (int) $termRow["term_id"],
+                "term_number" => (int) $termRow["term_number"],
+                "year" => (int) $termRow["year_label"],
+            ],
+            "subjects" => $subjectNames,
+            "students" => $response,
+        ];
     }
 
     public function getTermIdByYearAndNumber($yearLabel, $termNumber) {

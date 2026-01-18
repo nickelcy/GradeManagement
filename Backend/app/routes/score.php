@@ -19,13 +19,14 @@ if ($method === 'GET' && preg_match('#^/api/students/scores/?$#', $url)) {
 if ($method === 'GET' && preg_match('#^/api/classes/scores/?$#', $url)) {
     requireUser();
     $classId = $_GET["class"] ?? null;
-    $termId = $_GET["term"] ?? null;
-    if ($classId === null || $termId === null) {
+    $year = $_GET["year"] ?? null;
+    $termNumber = $_GET["term"] ?? null;
+    if ($classId === null || $year === null || $termNumber === null) {
         http_response_code(400);
-        echo json_encode(["error" => "class and term are required"]);
+        echo json_encode(["error" => "class, year, and term are required"]);
         exit;
     }
-    $scoreController->getClassScoresByTerm($classId, $termId);
+    $scoreController->getClassScoresByTerm($classId, $year, $termNumber);
     exit;
 }
 
