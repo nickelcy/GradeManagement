@@ -9,6 +9,7 @@ import { AdminSidebar } from '../../components/Sidebar'
 import { useAuth } from '../../context/AuthContext'
 import { useYear } from '../../context/YearContext'
 import api from '../../utils/api'
+import { useNavigate } from 'react-router-dom'
 
 type Classroom = {
   class_id: number
@@ -35,6 +36,7 @@ const Grade = () => {
   const [classrooms, setClassrooms] = useState<Classroom[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const navigate = useNavigate()
 
   const selectedYearLabel = useMemo(() => {
     const selected = years.find(
@@ -165,6 +167,7 @@ const Grade = () => {
             type="button"
             className="grade-action-button view"
             aria-label={`View ${item.class_name}`}
+            onClick={() => navigate('/classlist/' + item.class_id)}
           >
             <FiExternalLink aria-hidden="true" />
           </button>

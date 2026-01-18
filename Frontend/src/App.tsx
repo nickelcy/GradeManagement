@@ -10,6 +10,7 @@ import Users from './pages/admin/Users'
 import Students from './pages/admin/Students'
 import StudentReport from './pages/admin/StudentReports'
 import SubjectReport from './pages/admin/SubjectReport'
+import ClassList from './pages/admin/ClassList'
 import Login from './pages/auth/Login'
 import TeacherDashboard from './pages/teacher/TeacherDashboard'
 import Term from './pages/teacher/Term'
@@ -46,6 +47,10 @@ const AppContent = () => {
         <Route
           path="/grade/:grade"
           element={roleId === 1 ? <Grade /> : <Navigate to="/" replace />}
+        />
+        <Route
+          path="/classlist/:classid"
+          element={roleId === 1 ? <ClassList /> : <Navigate to="/" replace />}
         />
         <Route
           path="/term/:term"

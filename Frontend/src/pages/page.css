@@ -584,3 +584,85 @@
   color: var(--color-text-muted);
   font-size: 0.95rem;
 }
+
+.classlist-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.classlist-title {
+  margin: 0;
+  font-size: 1.6rem;
+}
+
+.classlist-title-icon {
+  font-size: 1.3rem;
+  color: var(--color-text-muted);
+}
+
+.classlist-back {
+  border: none;
+  background: #4a4a4a;
+  color: #f5f5f5;
+  padding: 0.5rem 1.1rem;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 1.2rem;
+}
+
+.classlist-table-card {
+  background: #262626;
+  padding: 1rem;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+}
+
+.classlist-status {
+  margin: 0 0 1rem;
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+}
+
+.classlist-status.error {
+  color: #ff9a9a;
+}
+
+.classlist-action-cell {
+  text-align: center;
+}
+
+.classlist-action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 0.6rem;
+}
+
+.classlist-action-button {
+  border: none;
+  background: transparent;
+  color: inherit;
+  padding: 0.35rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.classlist-action-button.delete {
+  color: #ff5959;
+}
+
+.classlist-action-button.edit {
+  color: #3cc36b;
+}
+
+.classlist-action-button.info {
+  color: #4aa3ff;
+}
+
+.classlist-action-button:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.08);
+}
