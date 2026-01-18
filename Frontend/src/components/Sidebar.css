@@ -15,6 +15,12 @@
   transition: transform 0.3s ease;
   z-index: 30;
   overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.dashboard-sidebar::-webkit-scrollbar {
+  width: 0;
+  height: 0;
 }
 
 .dashboard-sidebar.open {

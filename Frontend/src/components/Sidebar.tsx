@@ -49,6 +49,9 @@ export const AdminSidebar = ({ userId, onLogout }: SidebarProps) => {
             <div className="nav-group">
             <span className="nav-title">Manage</span>
               <div className="nav-sub">
+                 <button type="button" className="nav-link" onClick={() => navigate('/manage-year')}>
+                  Academic Year
+                </button>
                 <button type="button" className="nav-link" onClick={() => navigate('/staff')}>
                   Staff Users
                 </button>
