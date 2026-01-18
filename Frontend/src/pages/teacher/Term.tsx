@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import { CompactTable } from '@table-library/react-table-library/compact'
 import { useTheme } from '@table-library/react-table-library/theme'
 import { getTheme } from '@table-library/react-table-library/baseline'
-import { FiEdit2, FiTrash2 } from 'react-icons/fi'
+import { FiEdit2 } from 'react-icons/fi'
 import { TeacherSidebar } from '../../components/Sidebar'
 import { useAuth } from '../../context/AuthContext'
 import { useUser } from '../../context/UserContext'
@@ -73,12 +73,13 @@ const Term = () => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  const selectedYearLabel = useMemo(() => {
-    const selected = years.find(
-      (year) => String(year.academic_year_id) === selectedYearId,
-    )
-    return selected ? String(selected.year_label) : ''
-  }, [years, selectedYearId])
+  const selectedYear = useMemo(
+    () => years.find((year) => String(year.academic_year_id) === selectedYearId),
+    [years, selectedYearId],
+  )
+  const selectedYearLabel = selectedYear ? String(selectedYear.year_label) : ''
+  const isActiveYear = selectedYear?.is_active === 1
+  const isEditable = Boolean(selectedYearLabel && isActiveYear)
 
   useEffect(() => {
     let isActive = true
@@ -226,7 +227,8 @@ const Term = () => {
         <div className="term-action-buttons">
           <button
             type="button"
-            className="term-action-button edit"
+            disabled={!isEditable}
+            className={`term-action-button edit ${isEditable ? '' : 'muted'}`}
             aria-label={`Edit ${item.student_number}`}
           >
             <FiEdit2 aria-hidden="true" />
@@ -234,7 +236,7 @@ const Term = () => {
         </div>
       ),
       cellProps: { className: 'term-action-cell' },
-    },
+    }
   ]
 
   return (
@@ -244,6 +246,10 @@ const Term = () => {
         <header className="dashboard-header">
           <div className="term-header">
             <h1 className="term-title">Score Management</h1>
+            <p className="term-meta">
+              TERM #{term ?? '—'} ({selectedYearLabel || '—'}) -{' '}
+              <i>{isEditable ? 'Editable' : 'View Only'}</i>
+            </p>
           </div>
         </header>
         <section className="dashboard-content">
