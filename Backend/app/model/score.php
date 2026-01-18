@@ -8,7 +8,7 @@ class Score {
         $this->db = $connection->getConnection();
     }
 
-    public function getStudentScoresByYear($studentId, $yearLabel) {
+    public function getStudentScoresByYear($studentId, $yearLabel, $termNumber = null) {
         $stmt = $this->db->prepare(
             "SELECT
                 s.score_id,
@@ -34,7 +34,35 @@ class Score {
 
         $studentId = (int) $studentId;
         $yearLabel = (int) $yearLabel;
-        $stmt->bind_param("ii", $studentId, $yearLabel);
+        if ($termNumber !== null) {
+            $termNumber = (int) $termNumber;
+            $stmt->close();
+            $stmt = $this->db->prepare(
+                "SELECT
+                    s.score_id,
+                    s.student_id,
+                    s.subject_id,
+                    sub.subject_name,
+                    s.term_id,
+                    t.term_number,
+                    ay.year_label,
+                    s.teacher_user_id,
+                    s.score_value,
+                    s.recorded_at
+                FROM score s
+                JOIN term t ON t.term_id = s.term_id
+                JOIN academic_year ay ON ay.academic_year_id = t.academic_year_id
+                JOIN subject sub ON sub.subject_id = s.subject_id
+                WHERE s.student_id = ? AND ay.year_label = ? AND t.term_number = ?
+                ORDER BY t.term_number, sub.subject_name"
+            );
+            if ($stmt === false) {
+                return null;
+            }
+            $stmt->bind_param("iii", $studentId, $yearLabel, $termNumber);
+        } else {
+            $stmt->bind_param("ii", $studentId, $yearLabel);
+        }
         if (!$stmt->execute()) {
             return null;
         }

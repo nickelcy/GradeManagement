@@ -7,12 +7,13 @@ if ($method === 'GET' && preg_match('#^/api/students/scores/?$#', $url)) {
     requireUser();
     $studentId = $_GET["student"] ?? null;
     $year = $_GET["year"] ?? null;
+    $term = $_GET["term"] ?? null;
     if ($studentId === null || $year === null) {
         http_response_code(400);
         echo json_encode(["error" => "student and year are required"]);
         exit;
     }
-    $scoreController->getStudentScoresByYear($studentId, $year);
+    $scoreController->getStudentScoresByYear($studentId, $year, $term);
     exit;
 }
 

@@ -8,8 +8,8 @@ class ScoreController {
         $this->score = new Score();
     }
 
-    public function getStudentScoresByYear($studentId, $yearLabel) {
-        $scores = $this->score->getStudentScoresByYear($studentId, $yearLabel);
+    public function getStudentScoresByYear($studentId, $yearLabel, $termNumber = null) {
+        $scores = $this->score->getStudentScoresByYear($studentId, $yearLabel, $termNumber);
         if ($scores === null) {
             http_response_code(500);
             echo json_encode(["error" => "Failed to retrieve scores"]);
