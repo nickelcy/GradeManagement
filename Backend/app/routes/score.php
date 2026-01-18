@@ -3,15 +3,29 @@ require_once __DIR__ . "/../controllers/score.php";
 require_once __DIR__ . '/../utils/auth.php';
 $scoreController = new ScoreController();
 
-if ($method === 'GET' && preg_match('#^/api/students/(\d+)/scores/(\d{4})/?$#', $url, $m)) {
+if ($method === 'GET' && preg_match('#^/api/students/scores/?$#', $url)) {
     requireUser();
-    $scoreController->getStudentScoresByYear($m[1], $m[2]);
+    $studentId = $_GET["student"] ?? null;
+    $year = $_GET["year"] ?? null;
+    if ($studentId === null || $year === null) {
+        http_response_code(400);
+        echo json_encode(["error" => "student and year are required"]);
+        exit;
+    }
+    $scoreController->getStudentScoresByYear($studentId, $year);
     exit;
-}   
+}
 
-if ($method === 'GET' && preg_match('#^/api/classes/(\d+)/terms/(\d+)/scores/?$#', $url, $m)) {
+if ($method === 'GET' && preg_match('#^/api/classes/scores/?$#', $url)) {
     requireUser();
-    $scoreController->getClassScoresByTerm($m[1], $m[2]);
+    $classId = $_GET["class"] ?? null;
+    $termId = $_GET["term"] ?? null;
+    if ($classId === null || $termId === null) {
+        http_response_code(400);
+        echo json_encode(["error" => "class and term are required"]);
+        exit;
+    }
+    $scoreController->getClassScoresByTerm($classId, $termId);
     exit;
 }
 

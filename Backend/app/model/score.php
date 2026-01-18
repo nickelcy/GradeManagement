@@ -44,38 +44,112 @@ class Score {
     }
 
     public function getClassScoresByTerm($classId, $termId) {
+        $classId = (int) $classId;
+        $termId = (int) $termId;
         $stmt = $this->db->prepare(
-            "SELECT
-                st.student_id,
-                st.student_number,
-                st.first_name,
-                st.last_name,
-                s.score_id,
-                s.subject_id,
-                sub.subject_name,
-                s.term_id,
-                s.teacher_user_id,
-                s.score_value,
-                s.recorded_at
-            FROM student st
-            LEFT JOIN score s ON s.student_id = st.student_id AND s.term_id = ?
-            LEFT JOIN subject sub ON sub.subject_id = s.subject_id
-            WHERE st.class_id = ?
-            ORDER BY st.last_name, st.first_name, sub.subject_name"
+            "SELECT grade_id FROM classroom WHERE class_id = ?"
         );
         if ($stmt === false) {
             return null;
         }
-
-        $classId = (int) $classId;
-        $termId = (int) $termId;
-        $stmt->bind_param("ii", $termId, $classId);
+        $stmt->bind_param("i", $classId);
         if (!$stmt->execute()) {
             return null;
         }
+        $gradeResult = $stmt->get_result();
+        $gradeRow = $gradeResult->fetch_assoc();
+        if (!$gradeRow) {
+            return [];
+        }
+        $gradeId = (int) $gradeRow["grade_id"];
 
-        $result = $stmt->get_result();
-        return $result->fetch_all(MYSQLI_ASSOC);
+        $stmt = $this->db->prepare(
+            "SELECT subject_id, subject_name
+             FROM subject
+             WHERE grade_id = ?
+             ORDER BY subject_name"
+        );
+        if ($stmt === false) {
+            return null;
+        }
+        $stmt->bind_param("i", $gradeId);
+        if (!$stmt->execute()) {
+            return null;
+        }
+        $subjects = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+
+        $stmt = $this->db->prepare(
+            "SELECT student_id, student_number, first_name, last_name
+             FROM student
+             WHERE class_id = ?
+             ORDER BY last_name, first_name"
+        );
+        if ($stmt === false) {
+            return null;
+        }
+        $stmt->bind_param("i", $classId);
+        if (!$stmt->execute()) {
+            return null;
+        }
+        $students = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+        if (!$students) {
+            return [];
+        }
+
+        $stmt = $this->db->prepare(
+            "SELECT s.student_id, s.subject_id, s.score_value
+             FROM score s
+             JOIN student st ON st.student_id = s.student_id
+             WHERE st.class_id = ? AND s.term_id = ?"
+        );
+        if ($stmt === false) {
+            return null;
+        }
+        $stmt->bind_param("ii", $classId, $termId);
+        if (!$stmt->execute()) {
+            return null;
+        }
+        $scoreRows = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+
+        $scoresByStudent = [];
+        foreach ($scoreRows as $row) {
+            $studentKey = (int) $row["student_id"];
+            $subjectKey = (int) $row["subject_id"];
+            $scoresByStudent[$studentKey][$subjectKey] = (float) $row["score_value"];
+        }
+
+        $subjectCount = count($subjects);
+        $response = [];
+
+        foreach ($students as $student) {
+            $studentId = (int) $student["student_id"];
+            $scores = [];
+            $total = 0.0;
+
+            foreach ($subjects as $subject) {
+                $subjectId = (int) $subject["subject_id"];
+                $scoreValue = $scoresByStudent[$studentId][$subjectId] ?? 0;
+                $scores[] = [
+                    "subject_name" => $subject["subject_name"],
+                    "score_value" => $scoreValue,
+                ];
+                $total += $scoreValue;
+            }
+
+            $average = $subjectCount > 0 ? $total / $subjectCount : 0;
+
+            $response[] = [
+                "student_id" => $studentId,
+                "student_number" => $student["student_number"],
+                "first_name" => $student["first_name"],
+                "last_name" => $student["last_name"],
+                "term_id" => $termId,
+                "scores" => $scores,
+                "overall_average" => $average,
+            ];
+        }
+
+        return $response;
     }
 
     public function getTermIdByYearAndNumber($yearLabel, $termNumber) {

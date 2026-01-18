@@ -16,9 +16,49 @@ class ScoreController {
             exit;
         }
 
+        $subjectMap = [];
+        $subjects = [];
+        $termMap = [];
+
+        foreach ($scores as $row) {
+            $subjectId = (int) $row["subject_id"];
+            if (!isset($subjectMap[$subjectId])) {
+                $subjectMap[$subjectId] = true;
+                $subjects[] = [
+                    "subject_id" => $subjectId,
+                    "name" => $row["subject_name"],
+                ];
+            }
+
+            $termId = (int) $row["term_id"];
+            if (!isset($termMap[$termId])) {
+                $termMap[$termId] = [
+                    "term_id" => $termId,
+                    "term_number" => (int) $row["term_number"],
+                    "scores" => [],
+                ];
+            }
+
+            $recordedAt = $row["recorded_at"];
+            $termMap[$termId]["scores"][(string) $subjectId] = [
+                "score_id" => (int) $row["score_id"],
+                "value" => (float) $row["score_value"],
+                "recorded_at" => $recordedAt
+                    ? str_replace(" ", "T", $recordedAt) . "Z"
+                    : null,
+                "teacher_user_id" => (int) $row["teacher_user_id"],
+            ];
+        }
+
+        $terms = array_values($termMap);
+        usort($terms, fn($a, $b) => $a["term_number"] <=> $b["term_number"]);
+
         echo json_encode([
             "message" => "Scores retrieved successfully",
-            "data" => $scores
+            "student_id" => (int) $studentId,
+            "year" => (int) $yearLabel,
+            "subjects" => $subjects,
+            "terms" => $terms,
         ]);
         exit;
     }
