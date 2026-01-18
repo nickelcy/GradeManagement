@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { CompactTable } from '@table-library/react-table-library/compact'
 import { useTheme } from '@table-library/react-table-library/theme'
 import { getTheme } from '@table-library/react-table-library/baseline'
-import { FiEdit2, FiTrash2, FiUserPlus } from 'react-icons/fi'
+import { FiEdit2, FiUserPlus } from 'react-icons/fi'
 import { AdminSidebar } from '../../components/Sidebar'
 import { useAuth } from '../../context/AuthContext'
 import api from '../../utils/api'
@@ -135,17 +135,11 @@ const Users = () => {
     { label: 'Firstname', renderCell: (item: UserRow) => item.first_name },
     { label: 'Lastname', renderCell: (item: UserRow) => item.last_name },
     { label: 'Role', renderCell: (item: UserRow) => item.role_label },
+    { label: 'Active', renderCell: (item: UserRow) => item.is_active === '1' ? 'True' : 'False' },
     {
       label: 'Action',
       renderCell: (item: UserRow) => (
         <div className="users-action-buttons">
-          <button
-            type="button"
-            className="users-action-button delete"
-            aria-label={`Delete ${item.staff_id}`}
-          >
-            <FiTrash2 aria-hidden="true" />
-          </button>
           <button
             type="button"
             className="users-action-button edit"

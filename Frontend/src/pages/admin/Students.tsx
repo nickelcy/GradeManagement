@@ -178,17 +178,11 @@ const Students = () => {
     { label: 'Lastname', renderCell: (item: StudentRow) => item.last_name },
     { label: 'Grade', renderCell: (item: StudentRow) => item.grade_label },
     { label: 'Class', renderCell: (item: StudentRow) => item.class_label },
+    { label: 'Active', renderCell: (item: StudentRow) => item.is_active === '1' ? 'True' : 'False' },
     {
       label: 'Action',
       renderCell: (item: StudentRow) => (
         <div className="students-action-buttons">
-          <button
-            type="button"
-            className="students-action-button delete"
-            aria-label={`Delete ${item.student_number}`}
-          >
-            <FiTrash2 aria-hidden="true" />
-          </button>
           <button
             type="button"
             className="students-action-button edit"
