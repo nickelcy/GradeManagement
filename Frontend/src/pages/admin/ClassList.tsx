@@ -160,6 +160,7 @@ const ClassList = () => {
     { label: 'Lastname', renderCell: (item: StudentRow) => item.last_name },
     { label: 'Grade', renderCell: (item: StudentRow) => item.grade_label },
     { label: 'Class', renderCell: (item: StudentRow) => item.class_label },
+    { label: 'Active', renderCell: (item: StudentRow) => item.is_active ? 'True' : 'False' },
     {
       label: 'Action',
       renderCell: (item: StudentRow) => (

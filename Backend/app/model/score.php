@@ -130,7 +130,7 @@ class Score {
         $stmt = $this->db->prepare(
             "SELECT student_id, student_number, first_name, last_name
              FROM student
-             WHERE class_id = ?
+             WHERE class_id = ? AND is_active = 1
              ORDER BY last_name, first_name"
         );
         if ($stmt === false) {
