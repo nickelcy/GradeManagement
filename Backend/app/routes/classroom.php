@@ -22,9 +22,15 @@ if ($method === 'GET' && preg_match('#^/api/classrooms/teacher/(\d+)/?$#', $url,
     exit;
 }
 
-if ($method === 'GET' && preg_match('#^/api/classrooms/(\d+)/students/?$#', $url, $m)) {
+if ($method === 'GET' && preg_match('#^/api/classrooms/students/?$#', $url)) {
     requireAdmin();
-    $classroomController->getStudentsByClassId($m[1]);
+    $classId = $_GET["class"] ?? null;
+    if ($classId === null) {
+        http_response_code(400);
+        echo json_encode(["error" => "class is required"]);
+        exit;
+    }
+    $classroomController->getStudentsByClassId($classId);
     exit;
 }
 
