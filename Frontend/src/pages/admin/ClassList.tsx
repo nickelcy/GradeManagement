@@ -168,6 +168,7 @@ const ClassList = () => {
             type="button"
             className="classlist-action-button edit"
             aria-label={`Edit ${item.student_number}`}
+            onClick={() => {navigate(`/manage-student/${item.student_id}`)}}
           >
             <FiEdit2 aria-hidden="true" />
           </button>
@@ -186,7 +187,7 @@ const ClassList = () => {
   ]
 
   const headerTitle = classroom
-    ? `Grade ${classroom.grade_number} - ${classroom.class_name}`
+    ? `#${classroom.class_id} Grade ${classroom.grade_number} - ${classroom.class_name}`
     : 'Classroom'
 
   return (
@@ -196,7 +197,7 @@ const ClassList = () => {
         <header className="dashboard-header">
           <div className="classlist-header">
             <h1 className="classlist-title">{headerTitle}</h1>
-            <FiUserPlus className="classlist-title-icon" aria-hidden="true" />
+            <FiUserPlus className="classlist-title-icon" aria-hidden="true" onClick={() => {navigate(`/manage-student/add`)}} />
           </div>
         </header>
         <section className="dashboard-content">
