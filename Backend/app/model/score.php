@@ -208,6 +208,49 @@ class Score {
         return $row ? (int) $row["term_id"] : null;
     }
 
+    public function getSubjectIdByStudentGradeAndName($studentId, $subjectName) {
+        $stmt = $this->db->prepare(
+            "SELECT c.grade_id
+             FROM student st
+             JOIN classroom c ON c.class_id = st.class_id
+             WHERE st.student_id = ?"
+        );
+        if ($stmt === false) {
+            return null;
+        }
+
+        $studentId = (int) $studentId;
+        $stmt->bind_param("i", $studentId);
+        if (!$stmt->execute()) {
+            return null;
+        }
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        if (!$row) {
+            return null;
+        }
+
+        $gradeId = (int) $row["grade_id"];
+        $stmt = $this->db->prepare(
+            "SELECT subject_id
+             FROM subject
+             WHERE grade_id = ? AND LOWER(subject_name) = LOWER(?)"
+        );
+        if ($stmt === false) {
+            return null;
+        }
+
+        $subjectName = trim((string) $subjectName);
+        $stmt->bind_param("is", $gradeId, $subjectName);
+        if (!$stmt->execute()) {
+            return null;
+        }
+
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        return $row ? (int) $row["subject_id"] : null;
+    }
+
     public function upsertStudentScores($studentId, $termId, $teacherUserId, array $scores) {
         if (!$scores) {
             return false;

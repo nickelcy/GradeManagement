@@ -36,8 +36,16 @@ if ($method === 'POST' && preg_match('#^/api/students/(\d+)/scores/(\d{4})/terms
     exit;
 }
 
-if ($method === 'PUT' && preg_match('#^/api/students/(\d+)/scores/(\d{4})/terms/(\d+)/?$#', $url, $m)) {
+if ($method === 'PUT' && preg_match('#^/api/students/scores/?$#', $url)) {
     $auth = requireUser();
-    $scoreController->updateStudentScoresByTermAndYear($m[1], $m[2], $m[3], $auth["user_id"]);
+    $studentId = $_GET["student"] ?? null;
+    $year = $_GET["year"] ?? null;
+    $term = $_GET["term"] ?? null;
+    if ($studentId === null || $year === null || $term === null) {
+        http_response_code(400);
+        echo json_encode(["error" => "student, year, and term are required"]);
+        exit;
+    }
+    $scoreController->updateStudentScoresByTermAndYear($studentId, $year, $term, $auth["user_id"]);
     exit;
 }

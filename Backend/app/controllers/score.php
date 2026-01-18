@@ -143,7 +143,36 @@ class ScoreController {
             exit;
         }
 
-        $ok = $this->score->upsertStudentScores($studentId, $termId, $teacherUserId, $scores);
+        $mappedScores = [];
+        foreach ($scores as $entry) {
+            if (!is_array($entry) || count($entry) !== 1) {
+                http_response_code(400);
+                echo json_encode(["error" => "Each score entry must include a single subject name."]);
+                exit;
+            }
+            $subjectName = array_key_first($entry);
+            $scoreValue = $entry[$subjectName];
+            if ($subjectName === null) {
+                http_response_code(400);
+                echo json_encode(["error" => "Subject name is required."]);
+                exit;
+            }
+            $subjectId = $this->score->getSubjectIdByStudentGradeAndName(
+                $studentId,
+                $subjectName
+            );
+            if (!$subjectId) {
+                http_response_code(400);
+                echo json_encode(["error" => "Unknown subject name: $subjectName"]);
+                exit;
+            }
+            $mappedScores[] = [
+                "subject_id" => $subjectId,
+                "score_value" => $scoreValue,
+            ];
+        }
+
+        $ok = $this->score->upsertStudentScores($studentId, $termId, $teacherUserId, $mappedScores);
         if (!$ok) {
             http_response_code(500);
             echo json_encode(["error" => "Failed to update student scores"]);
