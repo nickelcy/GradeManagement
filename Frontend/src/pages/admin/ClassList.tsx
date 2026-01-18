@@ -175,6 +175,7 @@ const ClassList = () => {
             type="button"
             className="classlist-action-button info"
             aria-label={`View ${item.student_number}`}
+            onClick={() => {navigate(`/scores/${item.student_id}`)}}
           >
             <FiBarChart2 aria-hidden="true" />
           </button>
