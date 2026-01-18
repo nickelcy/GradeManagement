@@ -1,4 +1,4 @@
-# Grade Management API
+# API Documentation
 
 Base URL
 - `http://localhost:8001/api`
@@ -19,14 +19,6 @@ Conventions
 GET `/api`
 - Purpose: initialize connection, quick welcome.
 - Auth: none.
-- Response:
-```json
-{
-  "message": "Welcome to the Grade Management System API.",
-  "note": "Connection initialized! Login & check status.",
-  "status": "https://localhost:8001/api/status."
-}
-```
 
 GET `/api/status`
 - Purpose: server + DB status.
@@ -94,7 +86,7 @@ POST `/api/users` or `/api/staff`
 ```
 
 PUT `/api/users/{id}`
-- Purpose: full update of a user.
+- Purpose: update a user.
 - Auth: admin.
 - Body: any fields from create (password will be re-hashed).
 
@@ -125,7 +117,7 @@ GET `/api/students`
 
 GET `/api/students/{id}`
 - Purpose: get student by `student_id`.
-- Auth: admin.
+- Auth: logged-in user.
 
 GET `/api/students/number/{student_number}`
 - Purpose: get student by student number.
@@ -169,9 +161,14 @@ GET `/api/classrooms/year-grade?year=2026&grade=1`
 - Auth: admin.
 - Query params: `year`, `grade`.
 
-GET `/api/classrooms/{id}/students`
-- Purpose: list students for a classroom.
+GET `/api/classrooms/teacher/{teacherId}`
+- Purpose: get classroom assigned to a teacher.
+- Auth: logged-in user.
+
+GET `/api/classrooms/students?class=1`
+- Purpose: list active students for a classroom.
 - Auth: admin.
+- Query params: `class`.
 
 POST `/api/classrooms`
 - Purpose: add classroom.
@@ -196,11 +193,11 @@ GET `/api/years/{id}`
 - Auth: admin.
 
 GET `/api/years`
-- Purpose: get all the academic years.
+- Purpose: get all academic years.
 - Auth: logged-in user.
 
 POST `/api/years`
-- Purpose: create academic year.
+- Purpose: create academic year (auto-creates 3 terms).
 - Auth: admin.
 - Body:
 ```json
@@ -219,13 +216,16 @@ PUT `/api/years/{id}`
 
 ## Scores (Logged-in User)
 
-GET `/api/students/{studentId}/scores/{yearLabel}`
+GET `/api/students/scores?student=62&year=2026`
 - Purpose: get a student's scores for a year.
 - Auth: logged-in user.
+- Optional query param: `term` (filters to a single term).
+- If `term` is provided and no scores exist, returns the term and subjects with null score values.
 
-GET `/api/classes/{classId}/terms/{termId}/scores`
-- Purpose: get class scores for a term.
+GET `/api/classes/scores?class=1&year=2026&term=1`
+- Purpose: get class scores for a term number.
 - Auth: logged-in user.
+- Returns active students only.
 
 POST `/api/students/{studentId}/scores/{yearLabel}/terms/{termNumber}`
 - Purpose: add scores for a student + term.
@@ -240,10 +240,20 @@ POST `/api/students/{studentId}/scores/{yearLabel}/terms/{termNumber}`
 }
 ```
 
-PUT `/api/students/{studentId}/scores/{yearLabel}/terms/{termNumber}`
+PUT `/api/students/scores?student=62&year=2026&term=1`
 - Purpose: update scores for a student + term (upsert).
 - Auth: logged-in user.
-- Body: same as POST.
+- Body (subject names must match the grade's subjects):
+```json
+{
+  "scores": [
+    { "Math": 88 },
+    { "English": 90 },
+    { "Science": 90 },
+    { "History": 78 }
+  ]
+}
+```
 
 ## Reports (Logged-in User)
 
@@ -262,19 +272,3 @@ GET `/api/reports/subject`
 - Query params: `year`, `term`, `grade`, `subject`
 - Example:
 `/api/reports/subject?year=2026&term=1&grade=1&subject=1`
-- Response:
-```json
-{
-  "message": "Subject report generated",
-  "data": {
-    "subject_name": "Math",
-    "average": 73.42,
-    "params": {
-      "year": "2026",
-      "term": "1",
-      "grade": "1",
-      "subject": "1"
-    }
-  }
-}
-```
