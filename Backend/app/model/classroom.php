@@ -29,6 +29,30 @@ class Classroom {
         return $result->fetch_assoc();
     }
 
+    public function getClassroomByTeacherId($teacherId) {
+        $stmt = $this->db->prepare(
+            "SELECT c.*, g.grade_number, COUNT(st.student_id) AS student_count
+             FROM `user` u
+             JOIN classroom c ON c.class_id = u.assigned_class_id
+             JOIN grade g ON g.grade_id = c.grade_id
+             LEFT JOIN student st ON st.class_id = c.class_id
+             WHERE u.user_id = ?
+             GROUP BY c.class_id"
+        );
+        if ($stmt === false) {
+            return null;
+        }
+
+        $teacherId = (int) $teacherId;
+        $stmt->bind_param("i", $teacherId);
+        if (!$stmt->execute()) {
+            return null;
+        }
+
+        $result = $stmt->get_result();
+        return $result->fetch_assoc();
+    }
+
     public function getClassroomsByYearAndGrade($yearLabel, $gradeNumber) {
         $yearLabel = (int) $yearLabel;
         $gradeNumber = (int) $gradeNumber;

@@ -23,6 +23,21 @@ class ClassroomController {
         exit;
     }
 
+    public function getClassroomsByTeacherId($teacherId) {
+        $classroom = $this->classroom->getClassroomByTeacherId($teacherId);
+        if (!$classroom) {
+            http_response_code(404);
+            echo json_encode(["error" => "Classroom for teacher $teacherId not found"]);
+            exit;
+        }
+
+        echo json_encode([
+            "message" => "Classroom for teacher $teacherId retrieved successfully",
+            "data" => $classroom
+        ]);
+        exit;
+    }
+
     public function getClassroomsByYearAndGrade() {
         $year = $_GET["year"] ?? null;
         $grade = $_GET["grade"] ?? null;

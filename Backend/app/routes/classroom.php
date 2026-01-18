@@ -16,6 +16,12 @@ if ($method === 'GET' && $url === '/api/classrooms/year-grade') {
     exit;
 }
 
+if ($method === 'GET' && preg_match('#^/api/classrooms/teacher/(\d+)/?$#', $url, $m)) {
+    requireUser();
+    $classroomController->getClassroomsByTeacherId($m[1]);
+    exit;
+}
+
 if ($method === 'GET' && preg_match('#^/api/classrooms/(\d+)/students/?$#', $url, $m)) {
     requireAdmin();
     $classroomController->getStudentsByClassId($m[1]);
