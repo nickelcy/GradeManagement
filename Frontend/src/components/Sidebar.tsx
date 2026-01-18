@@ -1,10 +1,11 @@
-import { useId, useState } from 'react'
+import { useEffect, useId, useState } from 'react'
 import { FiLogOut, FiMenu, FiUser, FiX } from 'react-icons/fi'
 import { Profile } from './sidebar/Profile'
 import { useUser } from '../context/UserContext'
 import './Sidebar.css'
 import { Year } from './sidebar/Year'
 import { useNavigate } from 'react-router-dom'
+import api from '../utils/api'
 
 type SidebarProps = {
   userId: number | null
@@ -103,6 +104,35 @@ export const TeacherSidebar = ({ userId, onLogout }: SidebarProps) => {
   const [isProfileOpen, setIsProfileOpen] = useState(false)
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
   const sidebarId = useId()
+  const [classroomLabel, setClassroomLabel] = useState('Classroom loading...')
+
+  useEffect(() => {
+    let isActive = true
+
+    const loadClassroom = async () => {
+      if (!profile?.userId) {
+        setClassroomLabel('Classroom unavailable')
+        return
+      }
+      try {
+        const response = await api.get(`/classrooms/teacher/${profile.userId}`)
+        const classroom = response.data?.data
+        if (isActive && classroom) {
+          setClassroomLabel(`Grade ${classroom.grade_number} - Class ${classroom.class_name}`)
+        }
+      } catch (err) {
+        if (isActive) {
+          setClassroomLabel('Classroom unavailable')
+        }
+      }
+    }
+
+    loadClassroom()
+
+    return () => {
+      isActive = false
+    }
+  }, [profile?.userId])
 
   return (
     <>
@@ -129,7 +159,7 @@ export const TeacherSidebar = ({ userId, onLogout }: SidebarProps) => {
       >
         <div className="sidebar-top">
           <div className="sidebar-role">Teacher</div>
-          <div className="sidebar-class">Grade 1 - Class 1A</div>
+          <div className="sidebar-class">{classroomLabel}</div>
           <nav className="nav-links">
             <Year />
             <br />
