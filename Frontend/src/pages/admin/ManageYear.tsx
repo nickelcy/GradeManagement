@@ -6,6 +6,7 @@ import { FiEdit2, FiPlus } from 'react-icons/fi'
 import { AdminSidebar } from '../../components/Sidebar'
 import { useAuth } from '../../context/AuthContext'
 import api from '../../utils/api'
+import { useNavigate } from 'react-router-dom'
 
 type AcademicYear = {
   academic_year_id: number
@@ -30,6 +31,7 @@ const ManageYear = () => {
   const [years, setYears] = useState<AcademicYear[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const navigate = useNavigate()
 
   useEffect(() => {
     let isActive = true
@@ -131,8 +133,9 @@ const ManageYear = () => {
           type="button"
           className="manageyear-action-button edit"
           aria-label={`Edit ${item.year_label}`}
+          onClick={() => {navigate(`/manage-year/${item.academic_year_id}`)}}
         >
-          <FiEdit2 aria-hidden="true" />
+          <FiEdit2 aria-hidden="true"/>
         </button>
       ),
       cellProps: { className: 'manageyear-action-cell' },
@@ -145,8 +148,8 @@ const ManageYear = () => {
       <div className="dashboard-main">
         <header className="dashboard-header">
           <div className="manageyear-header">
-            <h1 className="manageyear-title">Classroom</h1>
-            <FiPlus className="manageyear-title-icon" aria-hidden="true" />
+            <h1 className="manageyear-title">Academic Years</h1>
+            <FiPlus className="manageyear-title-icon" aria-hidden="true" onClick={() => {navigate(`/manage-year/add`)}}/>
           </div>
         </header>
         <section className="dashboard-content">
