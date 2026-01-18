@@ -206,7 +206,7 @@ const Students = () => {
         <header className="dashboard-header">
           <div className="students-header">
             <h1 className="students-title">Students</h1>
-            <FiUserPlus className="students-title-icon" aria-hidden="true" />
+            <FiUserPlus className="students-title-icon" aria-hidden="true" onClick={() => {navigate(`/manage-student/add`)}}/>
           </div>
         </header>
         <section className="dashboard-content">

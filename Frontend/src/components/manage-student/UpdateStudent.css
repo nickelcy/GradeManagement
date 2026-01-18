@@ -1,0 +1,106 @@
+.updatestudent-overlay {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 2rem 1.5rem;
+  z-index: 10;
+}
+
+.updatestudent-backdrop {
+  position: absolute;
+  inset: 0;
+  border: none;
+  padding: 0;
+  margin: 0;
+  background: rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+}
+
+.updatestudent-card {
+  position: relative;
+  width: min(520px, 100%);
+  background: #3a3a3a;
+  border-radius: 20px;
+  padding: 2.4rem 2.6rem;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: grid;
+  gap: 1.4rem;
+  max-height: min(90vh, 720px);
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.updatestudent-card::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+.updatestudent-title {
+  margin: 0;
+  text-align: center;
+  font-size: 1.6rem;
+}
+
+.updatestudent-error {
+  margin: 0;
+  color: #ff9a9a;
+  text-align: center;
+}
+
+.updatestudent-field {
+  display: grid;
+  gap: 0.45rem;
+  color: #d6d6d6;
+  font-weight: 600;
+}
+
+.updatestudent-field span {
+  font-size: 0.9rem;
+}
+
+.updatestudent-field input,
+.updatestudent-field select {
+  padding: 0.7rem 0.85rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #f5f5f5;
+  color: #2a2a2a;
+  font-size: 1rem;
+}
+
+.updatestudent-field input:disabled,
+.updatestudent-field select:disabled {
+  opacity: 0.75;
+  cursor: not-allowed;
+}
+
+.updatestudent-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.updatestudent-button {
+  padding: 0.7rem 1.6rem;
+  border-radius: 12px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+}
+
+.updatestudent-button.ghost {
+  background: #4a4a4a;
+  color: #f5f5f5;
+}
+
+.updatestudent-button.primary {
+  background: #43b436;
+  color: #f5f5f5;
+}
+
+.updatestudent-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}

@@ -18,6 +18,7 @@ import Scores from './pages/admin/Scores'
 import ManageYear from './pages/admin/ManageYear'
 import UpdateYear from './components/manage-year/UpdateYear'
 import UpdateStaff from './components/manage-staff/UpdateStaff'
+import UpdateStudent from './components/manage-student/UpdateStudent'
 import Login from './pages/auth/Login'
 import TeacherDashboard from './pages/teacher/TeacherDashboard'
 import Term from './pages/teacher/Term'
@@ -74,6 +75,10 @@ const AppContent = () => {
         <Route
           path="/manage-staff/:param"
           element={roleId === 1 ? <UpdateStaff /> : <Navigate to="/" replace />}
+        />
+        <Route
+          path="/manage-student/:param"
+          element={roleId === 1 ? <UpdateStudent /> : <Navigate to="/" replace />}
         />
         <Route
           path="/term/:term"
