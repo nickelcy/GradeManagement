@@ -179,8 +179,9 @@ const Grade = () => {
       <div className="dashboard-main">
         <header className="dashboard-header">
           <div className="grade-header">
-            <h1 className="grade-title">Classroom</h1>
-            <FiPlusCircle className="grade-title-icon" aria-hidden="true" />
+            <h1 className="grade-title">Classrooms</h1>
+            {/* <FiPlusCircle className="grade-title-icon" aria-hidden="true" /> */} 
+            {/* Future feature. Might be unecessary to implement for assigment. API capability is still tho if modification is needed. */}
           </div>
         </header>
         <section className="dashboard-content">
