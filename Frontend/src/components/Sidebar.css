@@ -75,6 +75,7 @@
   text-transform: uppercase;
   letter-spacing: 0.12em;
   color: var(--color-text);
+  cursor: pointer;
 }
 
 .sidebar-class {

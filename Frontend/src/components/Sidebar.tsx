@@ -14,7 +14,7 @@ type SidebarProps = {
 
 export const AdminSidebar = ({ userId, onLogout }: SidebarProps) => {
   const [isProfileOpen, setIsProfileOpen] = useState(false)
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true)
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const { profile } = useUser()
   const sidebarId = useId()
   const navigate = useNavigate()
@@ -159,7 +159,7 @@ export const TeacherSidebar = ({ userId, onLogout }: SidebarProps) => {
         className={`dashboard-sidebar teacher-sidebar ${isSidebarOpen ? 'open' : ''}`}
       >
         <div className="sidebar-top">
-          <div className="sidebar-role">Teacher</div>
+          <div className="sidebar-role" onClick={() => navigate('/')}>Teacher</div>
           <div className="sidebar-class">{classroomLabel}</div>
           <nav className="nav-links">
             <Year />
