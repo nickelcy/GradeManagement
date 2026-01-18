@@ -162,20 +162,6 @@ const Grade = () => {
         <div className="grade-action-buttons">
           <button
             type="button"
-            className="grade-action-button delete"
-            aria-label={`Delete ${item.class_name}`}
-          >
-            <FiTrash2 aria-hidden="true" />
-          </button>
-          <button
-            type="button"
-            className="grade-action-button edit"
-            aria-label={`Edit ${item.class_name}`}
-          >
-            <FiEdit2 aria-hidden="true" />
-          </button>
-          <button
-            type="button"
             className="grade-action-button view"
             aria-label={`View ${item.class_name}`}
           >
