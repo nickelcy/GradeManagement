@@ -104,6 +104,7 @@ export const TeacherSidebar = ({ userId, onLogout }: SidebarProps) => {
   const [isProfileOpen, setIsProfileOpen] = useState(false)
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
   const sidebarId = useId()
+  const navigate = useNavigate()
   const [classroomLabel, setClassroomLabel] = useState('Classroom loading...')
 
   useEffect(() => {
@@ -165,7 +166,7 @@ export const TeacherSidebar = ({ userId, onLogout }: SidebarProps) => {
             <br />
             <span className="nav-title">Grades</span>
             {['Term 1', 'Term 2', 'Term 3'].map((term) => (
-              <button key={term} type="button" className="nav-link">
+              <button key={term} type="button" className="nav-link" onClick={() => navigate(`/term/${term.split(' ')[1]}`)}>
                 {term}
               </button>
             ))}

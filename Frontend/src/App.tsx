@@ -12,6 +12,7 @@ import StudentReport from './pages/admin/StudentReports'
 import SubjectReport from './pages/admin/SubjectReport'
 import Login from './pages/auth/Login'
 import TeacherDashboard from './pages/teacher/TeacherDashboard'
+import Term from './pages/teacher/Term'
 
 const AppContent = () => {
   const { token, roleId } = useAuth()
@@ -44,6 +45,10 @@ const AppContent = () => {
         <Route
           path="/grade/:grade"
           element={roleId === 1 ? <Grade /> : <Navigate to="/" replace />}
+        />
+        <Route
+          path="/term/:term"
+          element={roleId !== 1 ? <Term /> : <Navigate to="/" replace />}
         />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
