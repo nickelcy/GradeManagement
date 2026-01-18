@@ -16,6 +16,52 @@ class ScoreController {
             exit;
         }
 
+        if (!$scores && $termNumber !== null) {
+            $subjects = $this->score->getSubjectsByStudentGrade($studentId);
+            if ($subjects === null) {
+                http_response_code(500);
+                echo json_encode(["error" => "Failed to retrieve subjects"]);
+                exit;
+            }
+            $termId = $this->score->getTermIdByYearAndNumber($yearLabel, $termNumber);
+            if (!$termId) {
+                http_response_code(404);
+                echo json_encode(["error" => "Term not found for year $yearLabel and term $termNumber"]);
+                exit;
+            }
+            $emptyScores = [];
+            foreach ($subjects as $subject) {
+                $subjectId = (int) $subject["subject_id"];
+                $emptyScores[(string) $subjectId] = [
+                    "score_id" => null,
+                    "value" => null,
+                ];
+            }
+
+            echo json_encode([
+                "message" => "Scores retrieved successfully",
+                "student_id" => (int) $studentId,
+                "year" => (int) $yearLabel,
+                "overall" => 0,
+                "subjects" => array_map(
+                    fn($subject) => [
+                        "subject_id" => (int) $subject["subject_id"],
+                        "name" => $subject["subject_name"],
+                    ],
+                    $subjects,
+                ),
+                "terms" => [
+                    [
+                        "term_id" => $termId,
+                        "term_number" => (int) $termNumber,
+                        "overall" => 0,
+                        "scores" => $emptyScores,
+                    ],
+                ],
+            ]);
+            exit;
+        }
+
         $subjectMap = [];
         $subjects = [];
         $termMap = [];

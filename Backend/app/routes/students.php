@@ -10,7 +10,7 @@ if ($method === 'GET' && ($url === '/api/students')){
 }   
 
 if ($method === 'GET' && preg_match('#^/api/students/(\d+)/?$#', $url, $m)) {
-    requireAdmin();
+    requireUser();
     $studentController->getStudentById($m[1]);
     exit;
 }

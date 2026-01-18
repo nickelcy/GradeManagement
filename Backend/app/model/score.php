@@ -236,6 +236,29 @@ class Score {
         return $row ? (int) $row["term_id"] : null;
     }
 
+    public function getSubjectsByStudentGrade($studentId) {
+        $stmt = $this->db->prepare(
+            "SELECT sub.subject_id, sub.subject_name
+             FROM student st
+             JOIN classroom c ON c.class_id = st.class_id
+             JOIN subject sub ON sub.grade_id = c.grade_id
+             WHERE st.student_id = ?
+             ORDER BY sub.subject_name"
+        );
+        if ($stmt === false) {
+            return null;
+        }
+
+        $studentId = (int) $studentId;
+        $stmt->bind_param("i", $studentId);
+        if (!$stmt->execute()) {
+            return null;
+        }
+
+        $result = $stmt->get_result();
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
     public function getSubjectIdByStudentGradeAndName($studentId, $subjectName) {
         $stmt = $this->db->prepare(
             "SELECT c.grade_id

@@ -102,7 +102,7 @@ export const AdminSidebar = ({ userId, onLogout }: SidebarProps) => {
 export const TeacherSidebar = ({ userId, onLogout }: SidebarProps) => {
   const { profile } = useUser()
   const [isProfileOpen, setIsProfileOpen] = useState(false)
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true)
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const sidebarId = useId()
   const navigate = useNavigate()
   const [classroomLabel, setClassroomLabel] = useState('Classroom loading...')

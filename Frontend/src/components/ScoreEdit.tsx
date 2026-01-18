@@ -17,6 +17,19 @@ type ScoreResponse = {
   }[]
 }
 
+type StudentResponse = {
+  message: string
+  data: {
+    student_id: number
+    student_number: string
+    first_name: string
+    last_name: string
+    class_id: number
+    created_at: string
+    is_active: number
+  }
+}
+
 type SubjectScore = {
   subjectId: number
   name: string
@@ -58,8 +71,12 @@ const ScoreEdit = () => {
         params.set('student', student)
         params.set('year', year)
         params.set('term', term)
-        const response = await api.get<ScoreResponse>(`/students/scores?${params}`)
-        const payload = response.data
+        const [scoreResponse, studentResponse] = await Promise.all([
+          api.get<ScoreResponse>(`/students/scores?${params}`),
+          api.get<StudentResponse>(`/students/${student}`),
+        ])
+        const payload = scoreResponse.data
+        const studentInfo = studentResponse.data?.data
         const targetTerm =
           payload.terms.find((entry) => entry.term_number === Number(term)) ??
           payload.terms[0]
@@ -76,8 +93,16 @@ const ScoreEdit = () => {
         if (isActive) {
           setSubjects(nextSubjects)
           setOverall(targetTerm?.overall ?? payload.overall ?? null)
-          setStudentNumber(String(payload.student_id))
-          setStudentName(`Student ${payload.student_id}`)
+          setStudentNumber(
+            studentInfo?.student_number
+              ? String(studentInfo.student_number)
+              : String(payload.student_id),
+          )
+          setStudentName(
+            studentInfo
+              ? `${studentInfo.first_name} ${studentInfo.last_name}`
+              : `Student ${payload.student_id}`,
+          )
         }
       } catch (err) {
         const message =
@@ -180,7 +205,7 @@ const ScoreEdit = () => {
           ))}
           <label className="score-edit-field full">
             <span>Overall</span>
-            <input type="text" value={overall ?? ''} readOnly />
+            <input type="text" value={`%${overall ?? '0'}`} readOnly />
           </label>
         </div>
         <div className="score-edit-actions">
