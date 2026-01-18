@@ -13,6 +13,7 @@ import SubjectReport from './pages/admin/SubjectReport'
 import Login from './pages/auth/Login'
 import TeacherDashboard from './pages/teacher/TeacherDashboard'
 import Term from './pages/teacher/Term'
+import ScoreEdit from './components/ScoreEdit'
 
 const AppContent = () => {
   const { token, roleId } = useAuth()
@@ -50,6 +51,7 @@ const AppContent = () => {
           path="/term/:term"
           element={roleId !== 1 ? <Term /> : <Navigate to="/" replace />}
         />
+        <Route path="/scores/:student/:year/:term" element={<ScoreEdit />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>

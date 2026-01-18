@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { CompactTable } from '@table-library/react-table-library/compact'
 import { useTheme } from '@table-library/react-table-library/theme'
 import { getTheme } from '@table-library/react-table-library/baseline'
@@ -72,6 +72,7 @@ const Term = () => {
   const [students, setStudents] = useState<StudentScore[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const navigate = useNavigate()
 
   const selectedYear = useMemo(
     () => years.find((year) => String(year.academic_year_id) === selectedYearId),
@@ -230,6 +231,7 @@ const Term = () => {
             disabled={!isEditable}
             className={`term-action-button edit ${isEditable ? '' : 'muted'}`}
             aria-label={`Edit ${item.student_number}`}
+            onClick={() => {navigate(`/scores/${item.student_id}/${selectedYearLabel}/${term}`)}}
           >
             <FiEdit2 aria-hidden="true" />
           </button>

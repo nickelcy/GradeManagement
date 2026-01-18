@@ -1,0 +1,113 @@
+.score-edit-overlay {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 2rem 1.5rem;
+  z-index: 10;
+}
+
+.score-edit-backdrop {
+  position: absolute;
+  inset: 0;
+  border: none;
+  padding: 0;
+  margin: 0;
+  background: rgba(0, 0, 0, 0.55);
+  cursor: pointer;
+}
+
+.score-edit-card {
+  position: relative;
+  width: min(520px, 100%);
+  background: #3a3a3a;
+  border-radius: 20px;
+  padding: 2.4rem 2.6rem;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: grid;
+  gap: 1.6rem;
+}
+
+.score-edit-title {
+  margin: 0;
+  text-align: center;
+  font-size: 1.6rem;
+}
+
+.score-edit-error {
+  margin: 0;
+  color: #ff9a9a;
+  text-align: center;
+}
+
+.score-edit-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.score-edit-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.2rem;
+}
+
+.score-edit-field {
+  display: grid;
+  gap: 0.45rem;
+  color: #d6d6d6;
+  font-weight: 600;
+}
+
+.score-edit-field span {
+  font-size: 0.9rem;
+}
+
+.score-edit-field input {
+  padding: 0.7rem 0.85rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #f5f5f5;
+  color: #2a2a2a;
+  font-size: 1rem;
+}
+
+.score-edit-field input[readonly] {
+  background: #303030;
+  color: #8a8a8a;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.score-edit-field.full {
+  grid-column: 1 / -1;
+}
+
+.score-edit-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.score-edit-button {
+  padding: 0.7rem 1.6rem;
+  border-radius: 12px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+}
+
+.score-edit-button.ghost {
+  background: #4a4a4a;
+  color: #f5f5f5;
+}
+
+.score-edit-button.primary {
+  background: #43b436;
+  color: #f5f5f5;
+}
+
+.score-edit-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
