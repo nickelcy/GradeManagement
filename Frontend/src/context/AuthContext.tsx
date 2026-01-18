@@ -40,22 +40,61 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       const decoded = JSON.parse(atob(payload.replace(/-/g, '+').replace(/_/g, '/')))
       const nextRoleId = typeof decoded.role === 'number' ? decoded.role : Number(decoded.role)
       const nextUserId = typeof decoded.sub === 'number' ? decoded.sub : Number(decoded.sub)
+      const nextExp = typeof decoded.exp === 'number' ? decoded.exp : Number(decoded.exp)
+      const isExpired =
+        Number.isFinite(nextExp) && nextExp * 1000 <= Date.now()
+
+      if (isExpired) {
+        setRoleId(null)
+        setUserId(null)
+        return { expired: true }
+      }
+
       setRoleId(Number.isFinite(nextRoleId) ? nextRoleId : null)
       setUserId(Number.isFinite(nextUserId) ? nextUserId : null)
+      return { expired: false }
     } catch {
       setRoleId(null)
       setUserId(null)
+      return { expired: true }
     }
   }, [])
 
   useEffect(() => {
     const storedToken = localStorage.getItem(STORAGE_KEY)
     if (storedToken) {
+      const result = decodeToken(storedToken)
+      if (result?.expired) {
+        localStorage.removeItem(STORAGE_KEY)
+        setAuthToken(null)
+        setToken(null)
+        return
+      }
       setToken(storedToken)
-      decodeToken(storedToken)
       setAuthToken(storedToken)
     }
   }, [decodeToken])
+
+  useEffect(() => {
+    const interceptorId = api.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        const status = error?.response?.status
+        if (status === 401) {
+          setToken(null)
+          setRoleId(null)
+          setUserId(null)
+          localStorage.removeItem(STORAGE_KEY)
+          setAuthToken(null)
+        }
+        return Promise.reject(error)
+      },
+    )
+
+    return () => {
+      api.interceptors.response.eject(interceptorId)
+    }
+  }, [])
 
   const login = useCallback(async (staffId: string, password: string) => {
     setLoading(true)
@@ -69,8 +108,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       if (!nextToken) {
         throw new Error('Missing token in response.')
       }
+      const result = decodeToken(nextToken)
+      if (result?.expired) {
+        throw new Error('Session expired. Please log in again.')
+      }
       setToken(nextToken)
-      decodeToken(nextToken)
       localStorage.setItem(STORAGE_KEY, nextToken)
       setAuthToken(nextToken)
     } catch (err) {

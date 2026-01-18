@@ -7,7 +7,8 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import AdminDashboard from './pages/admin/AdminDashboard'
 import Users from './pages/admin/Users'
 import Students from './pages/admin/Students'
-// import Reports from './pages/admin/Reports'
+import StudentReport from './pages/admin/StudentReports'
+import SubjectReport from './pages/admin/SubjectReport'
 import Login from './pages/auth/Login'
 import TeacherDashboard from './pages/teacher/TeacherDashboard'
 
@@ -31,10 +32,14 @@ const AppContent = () => {
           path="/students"
           element={roleId === 1 ? <Students /> : <Navigate to="/" replace />}
         />
-        {/* <Route
-          path="/reports"
-          element={roleId === 1 ? <Reports /> : <Navigate to="/" replace />}
-        />         */}
+        <Route
+          path="/studentreports"
+          element={roleId === 1 ? <StudentReport /> : <Navigate to="/" replace />}
+        />        
+        <Route
+          path="/subjectreport"
+          element={roleId === 1 ? <SubjectReport /> : <Navigate to="/" replace />}
+        />   
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>

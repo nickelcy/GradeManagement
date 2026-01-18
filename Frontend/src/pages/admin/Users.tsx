@@ -130,7 +130,8 @@ const Users = () => {
   ])
 
   const COLUMNS = [
-    { label: 'Staff ID', renderCell: (item: UserRow) => item.staff_id },
+    { label: 'Id', renderCell: (item: UserRow) => item.user_id },
+    { label: 'Staff Id', renderCell: (item: UserRow) => item.staff_id },
     { label: 'Firstname', renderCell: (item: UserRow) => item.first_name },
     { label: 'Lastname', renderCell: (item: UserRow) => item.last_name },
     { label: 'Role', renderCell: (item: UserRow) => item.role_label },

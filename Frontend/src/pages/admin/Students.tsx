@@ -172,7 +172,8 @@ const Students = () => {
   ])
 
   const COLUMNS = [
-    { label: 'Id', renderCell: (item: StudentRow) => item.student_number },
+    { label: 'Id', renderCell: (item: StudentRow) => item.student_id },
+    { label: 'Student Id', renderCell: (item: StudentRow) => item.student_number },
     { label: 'Firstname', renderCell: (item: StudentRow) => item.first_name },
     { label: 'Lastname', renderCell: (item: StudentRow) => item.last_name },
     { label: 'Grade', renderCell: (item: StudentRow) => item.grade_label },
@@ -218,7 +219,7 @@ const Students = () => {
                 {loading ? 'Loading students...' : error}
               </p>
             )}
-            <CompactTable<StudentRow> columns={COLUMNS} data={data} theme={theme} />
+            <CompactTable columns={COLUMNS} data={data} theme={theme} />
           </div>
         </section>
       </div>
