@@ -32,11 +32,14 @@ class Year {
             return null;
         }
 
+        $this->db->begin_transaction();
+
         $stmt = $this->db->prepare(
             "INSERT INTO academic_year (year_label, start_date, end_date, is_active)
              VALUES (?, ?, ?, ?)"
         );
         if ($stmt === false) {
+            $this->db->rollback();
             return null;
         }
 
@@ -44,10 +47,53 @@ class Year {
         $isActive = (int) (bool) $isActive;
         $stmt->bind_param("issi", $yearLabel, $startDate, $endDate, $isActive);
         if (!$stmt->execute()) {
+            $this->db->rollback();
             return null;
         }
 
-        return $this->db->insert_id;
+        $yearId = $this->db->insert_id;
+
+        $start = new DateTime($startDate);
+        $end = new DateTime($endDate);
+        $totalDays = (int) $start->diff($end)->days + 1;
+        if ($totalDays < 3) {
+            $this->db->rollback();
+            return null;
+        }
+
+        $baseLength = intdiv($totalDays, 3);
+        $remainder = $totalDays % 3;
+        $lengths = [
+            $baseLength + ($remainder > 0 ? 1 : 0),
+            $baseLength + ($remainder > 1 ? 1 : 0),
+            $totalDays - ($baseLength + ($remainder > 0 ? 1 : 0)) - ($baseLength + ($remainder > 1 ? 1 : 0)),
+        ];
+
+        $termStmt = $this->db->prepare(
+            "INSERT INTO term (academic_year_id, term_number, start_date, end_date)
+             VALUES (?, ?, ?, ?)"
+        );
+        if ($termStmt === false) {
+            $this->db->rollback();
+            return null;
+        }
+
+        $currentStart = clone $start;
+        for ($termNumber = 1; $termNumber <= 3; $termNumber++) {
+            $length = $lengths[$termNumber - 1];
+            $currentEnd = (clone $currentStart)->modify('+' . ($length - 1) . ' days');
+            $startValue = $currentStart->format('Y-m-d');
+            $endValue = $currentEnd->format('Y-m-d');
+            $termStmt->bind_param("iiss", $yearId, $termNumber, $startValue, $endValue);
+            if (!$termStmt->execute()) {
+                $this->db->rollback();
+                return null;
+            }
+            $currentStart = (clone $currentEnd)->modify('+1 day');
+        }
+
+        $this->db->commit();
+        return $yearId;
     }
 
     public function getYears() {
