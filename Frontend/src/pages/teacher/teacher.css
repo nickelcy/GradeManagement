@@ -1,0 +1,76 @@
+.term-header {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+}
+
+.term-title {
+  margin: 0;
+  font-size: 1.6rem;
+}
+
+.term-table-card {
+  background: #262626;
+  padding: 1rem;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+}
+
+.term-status {
+  margin: 0 0 1rem;
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+}
+
+.term-status.error {
+  color: #ff9a9a;
+}
+
+.term-action-cell {
+  text-align: center;
+}
+
+.term-action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 0.6rem;
+}
+
+.term-action-button {
+  border: none;
+  background: transparent;
+  color: inherit;
+  padding: 0.35rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.term-action-button.delete {
+  color: #ff5959;
+}
+
+.term-action-button.edit {
+  color: #3cc36b;
+}
+
+.term-action-button:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.term-action-button.muted,
+.term-action-button:disabled {
+  color: #6f6f6f;
+  cursor: not-allowed;
+  transform: none;
+  background: transparent;
+}
+
+.term-meta {
+  margin: 0.35rem 0 0;
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+}

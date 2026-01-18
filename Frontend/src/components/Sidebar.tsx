@@ -43,7 +43,7 @@ export const AdminSidebar = ({ userId, onLogout }: SidebarProps) => {
         className={`dashboard-sidebar admin-sidebar ${isSidebarOpen ? 'open' : ''}`}
       >
         <div className="sidebar-top">
-          <div className="sidebar-role">Administrator</div>
+          <div className="sidebar-role" onClick={() => navigate('/')}>Administrator</div>
             <Year />
           <nav className="nav-links">
             <div className="nav-group">
