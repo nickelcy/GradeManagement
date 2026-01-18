@@ -2,10 +2,11 @@ import { useEffect, useMemo, useState } from 'react'
 import { CompactTable } from '@table-library/react-table-library/compact'
 import { useTheme } from '@table-library/react-table-library/theme'
 import { getTheme } from '@table-library/react-table-library/baseline'
-import { FiEdit2, FiTrash2, FiUserPlus } from 'react-icons/fi'
+import { FiEdit2, FiUserPlus } from 'react-icons/fi'
 import { AdminSidebar } from '../../components/Sidebar'
 import { useAuth } from '../../context/AuthContext'
 import api from '../../utils/api'
+import { useNavigate } from 'react-router-dom'
 
 type Student = {
   student_id: string
@@ -46,6 +47,7 @@ const Students = () => {
   const [classrooms, setClassrooms] = useState<Record<string, Classroom>>({})
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const navigate = useNavigate()
 
   useEffect(() => {
     let isActive = true
@@ -187,6 +189,7 @@ const Students = () => {
             type="button"
             className="students-action-button edit"
             aria-label={`Edit ${item.student_number}`}
+            onClick={() => {navigate(`/manage-student/${item.student_id}`)}}
           >
             <FiEdit2 aria-hidden="true" />
           </button>

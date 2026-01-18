@@ -6,6 +6,7 @@ import { FiEdit2, FiUserPlus } from 'react-icons/fi'
 import { AdminSidebar } from '../../components/Sidebar'
 import { useAuth } from '../../context/AuthContext'
 import api from '../../utils/api'
+import { useNavigate } from 'react-router-dom'
 
 type User = {
   user_id: string
@@ -39,6 +40,7 @@ const Users = () => {
   const [users, setUsers] = useState<User[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const navigate = useNavigate()
 
   useEffect(() => {
     let isActive = true
@@ -144,6 +146,7 @@ const Users = () => {
             type="button"
             className="users-action-button edit"
             aria-label={`Edit ${item.staff_id}`}
+            onClick={() => {navigate(`/manage-staff/${item.user_id}`)}}
           >
             <FiEdit2 aria-hidden="true" />
           </button>
@@ -160,7 +163,7 @@ const Users = () => {
         <header className="dashboard-header">
           <div className="users-header">
             <h1 className="users-title">Staff Users</h1>
-            <FiUserPlus className="users-title-icon" aria-hidden="true" />
+            <FiUserPlus className="users-title-icon" aria-hidden="true" onClick={() => {navigate(`/manage-staff/add`)}}/>
           </div>
         </header>
         <section className="dashboard-content">
