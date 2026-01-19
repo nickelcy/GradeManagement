@@ -1,7 +1,6 @@
 services:
   mysql:
     image: mysql:8
-    container_name: mysql-docker
     restart: always
     ports:
       - "127.0.0.1:3307:3306"
@@ -15,7 +14,6 @@ services:
 
   api:
     build: .
-    container_name: grms-api
     restart: always
     environment:
       DB_HOST: mysql
@@ -24,7 +22,7 @@ services:
       DB_PASS: root
       DB_PORT: 3306
       JWT_SECRET: 17ace333fd7cf4512c558a66ba53c43d
-      FRONTEND_URL: http://localhost:5173
+      FRONTEND_URL: https://grms.nickelcy.com
     depends_on:
       - mysql
     expose:
@@ -32,7 +30,6 @@ services:
 
   nginx:
     image: nginx:alpine
-    container_name: grms-nginx
     restart: always
     ports:
       - "8080:80"
@@ -43,3 +40,5 @@ services:
 
 volumes:
   mysql_data:
+    name: grms-project_mysql_data
+
