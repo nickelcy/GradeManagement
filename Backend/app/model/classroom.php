@@ -92,6 +92,23 @@ class Classroom {
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
+    public function getAllClassrooms() {
+        $stmt = $this->db->prepare(
+            "SELECT c.class_id, c.class_name, g.grade_number
+             FROM classroom c
+             JOIN grade g ON g.grade_id = c.grade_id
+             ORDER BY g.grade_number, c.class_name"
+        );
+        if ($stmt === false) {
+            return [];
+        }
+        if (!$stmt->execute()) {
+            return [];
+        }
+        $result = $stmt->get_result();
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
     public function getStudentsByClassId($classId) {
         $stmt = $this->db->prepare(
             "SELECT st.*

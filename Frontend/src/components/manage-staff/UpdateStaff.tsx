@@ -18,6 +18,15 @@ type UserResponse = {
   }
 }
 
+type ClassroomResponse = {
+  message: string
+  data: Array<{
+    class_id: number
+    class_name: string
+    grade_number: number
+  }>
+}
+
 const UpdateStaff = () => {
   const navigate = useNavigate()
   const { param } = useParams<{ param: string }>()
@@ -34,6 +43,9 @@ const UpdateStaff = () => {
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [classrooms, setClassrooms] = useState<ClassroomResponse['data']>([])
+  const [classLoading, setClassLoading] = useState(true)
+  const [classError, setClassError] = useState<string | null>(null)
 
   useEffect(() => {
     let isActive = true
@@ -82,6 +94,37 @@ const UpdateStaff = () => {
       isActive = false
     }
   }, [isAddMode, userId])
+
+  useEffect(() => {
+    let isActive = true
+
+    const loadClassrooms = async () => {
+      setClassLoading(true)
+      setClassError(null)
+      try {
+        const response = await api.get<ClassroomResponse>('/classrooms')
+        const data = response.data?.data ?? []
+        if (isActive) {
+          setClassrooms(data)
+        }
+      } catch (err) {
+        if (isActive) {
+          setClassError('Unable to load classes.')
+          setClassrooms([])
+        }
+      } finally {
+        if (isActive) {
+          setClassLoading(false)
+        }
+      }
+    }
+
+    void loadClassrooms()
+
+    return () => {
+      isActive = false
+    }
+  }, [])
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -183,7 +226,13 @@ const UpdateStaff = () => {
           <span>Role</span>
           <select
             value={roleId}
-            onChange={(event) => setRoleId(event.target.value)}
+            onChange={(event) => {
+              const nextRole = event.target.value
+              setRoleId(nextRole)
+              if (Number(nextRole) !== 2) {
+                setAssignedClassId('')
+              }
+            }}
             disabled={loading || saving}
           >
             <option value="1">Admin</option>
@@ -191,14 +240,25 @@ const UpdateStaff = () => {
           </select>
         </label>
         <label className="updatestaff-field">
-          <span>Assigned Class ID</span>
-          <input
-            type="number"
+          <span>Assigned Class</span>
+          <select
             value={assignedClassId}
             onChange={(event) => setAssignedClassId(event.target.value)}
-            disabled={loading || saving || Number(roleId) !== 2}
-            placeholder="3"
-          />
+            disabled={loading || saving || Number(roleId) !== 2 || classLoading}
+          >
+            <option value="">
+              {classLoading
+                ? 'Loading classes...'
+                : classError
+                  ? 'Classes unavailable'
+                  : 'Select a class'}
+            </option>
+            {classrooms.map((classroom) => (
+              <option key={classroom.class_id} value={classroom.class_id}>
+                {classroom.class_id} - {classroom.class_name}
+              </option>
+            ))}
+          </select>
         </label>
         <label className="updatestaff-field">
           <span>Status</span>

@@ -16,6 +16,15 @@ type StudentResponse = {
   }
 }
 
+type ClassroomResponse = {
+  message: string
+  data: Array<{
+    class_id: number
+    class_name: string
+    grade_number: number
+  }>
+}
+
 const UpdateStudent = () => {
   const navigate = useNavigate()
   const { param } = useParams<{ param: string }>()
@@ -33,6 +42,9 @@ const UpdateStudent = () => {
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [classrooms, setClassrooms] = useState<ClassroomResponse['data']>([])
+  const [classLoading, setClassLoading] = useState(true)
+  const [classError, setClassError] = useState<string | null>(null)
 
   useEffect(() => {
     let isActive = true
@@ -78,6 +90,37 @@ const UpdateStudent = () => {
       isActive = false
     }
   }, [isAddMode, studentId])
+
+  useEffect(() => {
+    let isActive = true
+
+    const loadClassrooms = async () => {
+      setClassLoading(true)
+      setClassError(null)
+      try {
+        const response = await api.get<ClassroomResponse>('/classrooms')
+        const data = response.data?.data ?? []
+        if (isActive) {
+          setClassrooms(data)
+        }
+      } catch (err) {
+        if (isActive) {
+          setClassError('Unable to load classes.')
+          setClassrooms([])
+        }
+      } finally {
+        if (isActive) {
+          setClassLoading(false)
+        }
+      }
+    }
+
+    void loadClassrooms()
+
+    return () => {
+      isActive = false
+    }
+  }, [])
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -153,15 +196,26 @@ const UpdateStudent = () => {
           />
         </label>
         <label className="updatestudent-field">
-          <span>Class ID</span>
-          <input
-            type="number"
+          <span>Class</span>
+          <select
             value={classId}
             onChange={(event) => setClassId(event.target.value)}
-            disabled={loading || saving}
-            placeholder="7"
+            disabled={loading || saving || classLoading}
             required
-          />
+          >
+            <option value="">
+              {classLoading
+                ? 'Loading classes...'
+                : classError
+                  ? 'Classes unavailable'
+                  : 'Select a class'}
+            </option>
+            {classrooms.map((classroom) => (
+              <option key={classroom.class_id} value={classroom.class_id}>
+                {classroom.class_id} - {classroom.class_name}
+              </option>
+            ))}
+          </select>
         </label>
         <label className="updatestudent-field">
           <span>Status</span>

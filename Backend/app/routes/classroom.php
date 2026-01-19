@@ -10,6 +10,12 @@ if ($method === 'GET' && preg_match('#^/api/classrooms/(\d+)/?$#', $url, $m)) {
     exit;
 }
 
+if ($method === 'GET' && $url === '/api/classrooms') {
+    requireAdmin();
+    $classroomController->getAllClassrooms();
+    exit;
+}
+
 if ($method === 'GET' && $url === '/api/classrooms/year-grade') {
     requireAdmin();
     $classroomController->getClassroomsByYearAndGrade();

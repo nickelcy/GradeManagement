@@ -154,6 +154,10 @@ DELETE `/api/students/{id}`
 
 ## Classroom (Admin)
 
+GET `/api/classrooms`
+- Purpose: list all classrooms.
+- Auth: admin.
+
 GET `/api/classrooms/{id}`
 - Purpose: get classroom by `class_id`.
 - Auth: admin.

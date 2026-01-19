@@ -62,6 +62,15 @@ class ClassroomController {
         exit;
     }
 
+    public function getAllClassrooms() {
+        $classrooms = $this->classroom->getAllClassrooms();
+        echo json_encode([
+            "message" => "Classrooms retrieved successfully",
+            "data" => $classrooms
+        ]);
+        exit;
+    }
+
     public function getStudentsByClassId($id) {
         $students = $this->classroom->getStudentsByClassId($id);
 
