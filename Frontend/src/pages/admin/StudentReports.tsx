@@ -2,10 +2,11 @@ import { useMemo, useState } from 'react'
 import { CompactTable } from '@table-library/react-table-library/compact'
 import { useTheme } from '@table-library/react-table-library/theme'
 import { getTheme } from '@table-library/react-table-library/baseline'
-import { FiEdit2, FiTrash2 } from 'react-icons/fi'
+import { FiEdit2 } from 'react-icons/fi'
 import { AdminSidebar } from '../../components/Sidebar'
 import { useAuth } from '../../context/AuthContext'
 import api from '../../utils/api'
+import { useNavigate } from 'react-router-dom'
 
 type Score = {
   subject_name: string
@@ -68,6 +69,7 @@ const StudentReports = () => {
   const [reports, setReports] = useState<StudentReport[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const navigate = useNavigate()
 
   const handleGenerate = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -180,15 +182,9 @@ const StudentReports = () => {
         <div className="reports-action-buttons">
           <button
             type="button"
-            className="reports-action-button delete"
-            aria-label={`Delete report for ${item.student_number}`}
-          >
-            <FiTrash2 aria-hidden="true" />
-          </button>
-          <button
-            type="button"
             className="reports-action-button edit"
             aria-label={`Edit report for ${item.student_number}`}
+            onClick={() => {navigate(`/manage-student/${item.student_id}`)}}
           >
             <FiEdit2 aria-hidden="true" />
           </button>
