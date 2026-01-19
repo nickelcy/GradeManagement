@@ -8,13 +8,15 @@ $db = new Database();
 
 if ($method === 'GET' && $url === '/api') {
     try {
-        $db->initialize();
+        $didInitialize = $db->initializeIfEmpty();
     } catch (Exception $e) {
         error_log("Database initialization error: " . $e->getMessage());
     }
     echo json_encode([
         "message" => "Welcome to the Grade Management System API.",
-        "note" => "Connection initialized! Login & check status.",
+        "note" => $didInitialize
+            ? "Database initialized for the first time."
+            : "Database already initialized.",
         "status" => "https://localhost:8001/api/status.",
       ]);
     exit;

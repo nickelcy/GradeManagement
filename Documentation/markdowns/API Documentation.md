@@ -1,7 +1,8 @@
 # API Documentation
 
 Base URL
-- `http://localhost:8001/api`
+- Bare PHP: `http://localhost:8001/api`
+- Docker Compose (Nginx): `http://localhost:8080/api`
 
 Auth
 - Login returns a JWT token.
@@ -19,6 +20,7 @@ Conventions
 GET `/api`
 - Purpose: initialize connection, quick welcome.
 - Auth: none.
+- Note: initializes the database only if it does not exist or has no tables, and returns a message indicating whether it was initialized this request.
 
 GET `/api/status`
 - Purpose: server + DB status.

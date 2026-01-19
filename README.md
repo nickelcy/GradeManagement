@@ -5,13 +5,13 @@ This guide helps you run the project locally and points to the full documentatio
 ## Quick start
 
 1) Backend setup
-- Follow `Documentation/markdowns/Backend Documentation.md`.
+- Follow [Backend Documentation](Documentation/markdowns/Backend%20Documentation.md).
 
 2) Frontend setup
-- Follow `Documentation/markdowns/Frontend Documentation.md`.
+- Follow [Frontend Documentation](Documentation/markdowns/Frontend%20Documentation.md).
 
 3) API reference
-- See `Documentation/markdowns/API Documentation.md`.
+- See [API Documentation](Documentation/markdowns/API%20Documentation.md).
 
 ## Useful links
 
