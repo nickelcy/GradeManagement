@@ -184,7 +184,13 @@ const StudentReports = () => {
             type="button"
             className="reports-action-button edit"
             aria-label={`Edit report for ${item.student_number}`}
-            onClick={() => {navigate(`/manage-student/${item.student_id}`)}}
+            onClick={() => {
+              if (!year || !term) {
+                setError('Year and term are required to edit scores.')
+                return
+              }
+              navigate(`/scores/${item.student_id}/${year}/${term}`)
+            }}
           >
             <FiEdit2 aria-hidden="true" />
           </button>

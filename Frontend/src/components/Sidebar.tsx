@@ -1,5 +1,16 @@
 import { useEffect, useId, useState } from 'react'
-import { FiLogOut, FiMenu, FiUser, FiX } from 'react-icons/fi'
+import {
+  FiBookOpen,
+  FiCalendar,
+  FiFileText,
+  FiLayers,
+  FiLogOut,
+  FiMenu,
+  FiUser,
+  FiUserCheck,
+  FiUsers,
+  FiX,
+} from 'react-icons/fi'
 import { Profile } from './sidebar/Profile'
 import { useUser } from '../context/UserContext'
 import './Sidebar.css'
@@ -50,18 +61,23 @@ export const AdminSidebar = ({ userId, onLogout }: SidebarProps) => {
             <span className="nav-title">Manage</span>
               <div className="nav-sub">
                  <button type="button" className="nav-link" onClick={() => navigate('/manage-year')}>
+                  <FiCalendar aria-hidden="true" />
                   Academic Year
                 </button>
                 <button type="button" className="nav-link" onClick={() => navigate('/staff')}>
+                  <FiUsers aria-hidden="true" />
                   Staff Users
                 </button>
                 <button type="button" className="nav-link" onClick={() => navigate('/students')}>
+                  <FiUserCheck aria-hidden="true" />
                   Students
                 </button>
                 <button type="button" className="nav-link" onClick={() => navigate('/studentreports')}>
+                  <FiFileText aria-hidden="true" />
                   Student Report
                 </button>                
                 <button type="button" className="nav-link" onClick={() => navigate('/subjectreport')}>
+                  <FiBookOpen aria-hidden="true" />
                   Subject Report
                 </button>
               </div>
@@ -71,6 +87,7 @@ export const AdminSidebar = ({ userId, onLogout }: SidebarProps) => {
               <div className="nav-sub">
                 {['1', '2', '3', '4', '5', '6'].map((grade) => (
                   <button key={grade} type="button" className="nav-link" onClick={() => navigate(`/grade/${grade}`)}>
+                    <FiLayers aria-hidden="true" />
                     Grades {grade}
                   </button>
                 ))}
@@ -170,6 +187,7 @@ export const TeacherSidebar = ({ userId, onLogout }: SidebarProps) => {
             <span className="nav-title">Grades</span>
             {['Term 1', 'Term 2', 'Term 3'].map((term) => (
               <button key={term} type="button" className="nav-link" onClick={() => navigate(`/term/${term.split(' ')[1]}`)}>
+                <FiFileText aria-hidden="true" />
                 {term}
               </button>
             ))}

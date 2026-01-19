@@ -22,7 +22,10 @@ services:
       DB_PASS: root
       DB_PORT: 3306
       JWT_SECRET: 17ace333fd7cf4512c558a66ba53c43d
-      FRONTEND_URL: https://grms.nickelcy.com
+      # For production with HTTPS frontend server
+      # FRONTEND_URL: https://grms.nickelcy.com
+      # For Localhost with HTTPS frontend dev server
+      FRONTEND_URL: http://localhost:5173 
     depends_on:
       - mysql
     expose:
