@@ -13,6 +13,9 @@ This guide helps you run the project locally and points to the full documentatio
 3) API reference
 - See <a href="Documentation/markdowns/API%20Documentation.md" target="_blank" rel="noreferrer">API Documentation</a>.
 
+4) Full local setup (XAMPP + Vite)
+- Follow <a href="Documentation/markdowns/Local%20Setup%20(XAMPP%20%2B%20Vite).md" target="_blank" rel="noreferrer">Local Setup (XAMPP + Vite)</a>.
+
 ## Useful links
 
 - Deployed Website: <a href="https://grms.nickelcy.com" target="_blank" rel="noreferrer">https://grms.nickelcy.com</a>
