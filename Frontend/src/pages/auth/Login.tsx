@@ -29,6 +29,7 @@ const Login = () => {
               type="text"
               name="staff_id"
               autoComplete="username"
+              placeholder='guest_admin'
               value={staffId}
               onChange={(event) => setStaffId(event.target.value)}
               required
@@ -41,6 +42,7 @@ const Login = () => {
               type="password"
               name="password"
               autoComplete="current-password"
+              placeholder='admin'
               value={password}
               onChange={(event) => setPassword(event.target.value)}
               required
@@ -56,6 +58,7 @@ const Login = () => {
           {error && <span>{error}</span>}
           {!error && status && <span>{status}</span>}
           {!error && !status && token && <span>Authenticated.</span>}
+          <div>Use (guest_admin / admin) to login</div>
         </div>
       </section>
     </main>
